@@ -1,10 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import { useAuthContext } from './context/AuthContext'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuthContext } from "./context/AuthContext";
 import Home from "./pages/Home";
+import Layout from "./Layout";
 
 const App = () => {
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -15,14 +16,15 @@ const App = () => {
           </div>
         </div>
       )}
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={!user ? <Home /> : <Navigate to="/permissions" />}
-        />
-
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={!user ? <Home /> : <Navigate to="/permissions" />}
+          />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };
