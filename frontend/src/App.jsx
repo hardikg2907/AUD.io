@@ -1,8 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./context/AuthContext";
-import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import Layout from "./Layout";
+import './App.css'
 
 const App = () => {
   const { user } = useAuthContext();
@@ -16,15 +18,19 @@ const App = () => {
           </div>
         </div>
       )}
-      <Layout>
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={!user ? <Home /> : <Navigate to="/permissions" />}
-          />
-        </Routes>
-      </Layout>
+      {!user && <Routes>
+        <Route
+          exact
+          path="/signup"
+          element={<SignUp />}
+        />
+        <Route
+          exact
+          path="/login"
+          element={<Login />}
+        />
+      </Routes>}
+      {user && <Layout></Layout>}
     </BrowserRouter>
   );
 };

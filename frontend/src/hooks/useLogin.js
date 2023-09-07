@@ -19,7 +19,7 @@ export const useLogin = () => {
         const json = await response.json()
         console.log(json)
         setError(json.error)
-
+        localStorage.setItem('profile', {name: 'Hardik Garg'})
         if(!response.ok)
         {
             setIsLoading(false)
@@ -30,7 +30,7 @@ export const useLogin = () => {
         }
         if(response.ok) {
             // save the user to local storage
-            localStorage.setItem('user', JSON.stringify(json))
+            localStorage.setItem('profile', JSON.stringify(json))
 
             // update the auth context
             dispatch({type: 'LOGIN', payload: json})
