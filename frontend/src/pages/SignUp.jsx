@@ -10,7 +10,7 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    <div className="h-screen w-screen flex flex-col justify-center items-center shadow-2xl">
       <form className="bg-[#303030] flex py-2 px-3 justify-center flex-col items-center gap-4 rounded-sm w-1/3">
         <h1 className="text-3xl text-white font-bold">Sign up</h1>
         <p className="text-white text-xs">
@@ -50,7 +50,7 @@ const SignUp = () => {
         <div className="flex gap-3 w-full">
           <button
             type="button"
-            className="border border-white duration-300 bg-transparent hover:bg-[#383838] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
+            className="duration-300 bg-[#252525] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
           >
             <FcGoogle className="scale-150" />
           </button>

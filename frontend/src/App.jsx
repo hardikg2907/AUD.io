@@ -4,33 +4,40 @@ import { useAuthContext } from "./context/AuthContext";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Layout from "./Layout";
-import './App.css'
+import "./App.css";
+import LandingPage from "./pages/LandingPage";
+import PrivateRoute from './components/PrivateRoute'
 
+const fallbackPath = "/login";
 const App = () => {
   const { user } = useAuthContext();
 
+  // useEffect(()=>{
+  //   if(user)
+  // },[user])
+
   return (
     <BrowserRouter>
-      {user && (
-        <div>
-          <div className="userProfileName">
-            <h4>{user.email}</h4>
-          </div>
-        </div>
-      )}
-      {!user && <Routes>
-        <Route
-          exact
-          path="/signup"
-          element={<SignUp />}
-        />
-        <Route
-          exact
-          path="/login"
-          element={<Login />}
-        />
-      </Routes>}
-      {user && <Layout></Layout>}
+      <Routes>
+        {/* Public Routes */}
+        {!user && (
+          <>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+          </>
+        )}
+
+        {/* Protected Routes */}
+        {user && (
+          <PrivateRoute
+            path="/home"
+            element={<Home />}
+            authenticated={user}
+            fallbackPath={fallbackPath}
+          />
+        )}
+      </Routes>
     </BrowserRouter>
   );
 };

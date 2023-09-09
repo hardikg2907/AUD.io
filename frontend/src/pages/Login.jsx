@@ -9,19 +9,22 @@ const inputStyling =
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const {login, isLoading, error} = useLogin();
+  const { login, isLoading, error } = useLogin();
   const [formData, setFormData] = useState({
-    email: '',
-    name: '',
-    password: ''
-  })
+    email: "",
+    name: "",
+    password: "",
+  });
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
-      <form className="bg-[#303030] flex py-3 px-3 justify-center flex-col items-center gap-4 rounded-sm w-1/3" onSubmit={e=>{
-        e.preventDefault()
-        login()
-      }}>
+    <div className="h-screen w-screen flex flex-col justify-center items-center shadow-2xl">
+      <form
+        className="bg-[#303030] flex py-3 px-3 justify-center flex-col items-center gap-4 rounded-sm w-1/3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          login(formData);
+        }}
+      >
         <h1 className="text-3xl text-white font-bold">Sign in</h1>
         <p className="text-white text-xs">
           To upload music and images, you must accept our
@@ -36,12 +39,22 @@ const Login = () => {
         </p>
 
         <div className="flex flex-col gap-2 w-full text-xs text-white">
-          <input type="email" placeholder="Email" className={inputStyling} />
+          <input
+            type="email"
+            placeholder="Email"
+            className={inputStyling}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, email: e.target.value }))
+            }
+          />
           <div className={inputStyling + " flex justify-between items-center"}>
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               className="bg-[#383838] w-full h-full focus:outline-none"
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, password: e.target.value }))
+              }
             />
             {showPassword ? (
               <AiOutlineEye
@@ -65,7 +78,7 @@ const Login = () => {
         <div className="flex gap-3 w-full">
           <button
             type="button"
-            className="border border-white duration-300 bg-transparent hover:bg-[#383838] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
+            className="duration-300 bg-[#252525] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
           >
             <FcGoogle className="scale-150" />
           </button>
