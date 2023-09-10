@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
+import { FiUploadCloud } from "react-icons/fi";
 
 const baseStyle = {
   flex: 1,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "20px",
+  justifyContent: "center",
   borderWidth: 2,
   borderRadius: 2,
   borderColor: "red",
@@ -16,6 +17,9 @@ const baseStyle = {
   outline: "none",
   transition: "border .24s ease-in-out",
   cursor: "pointer",
+  width: "12.5%",
+  height: "100px",
+  borderRadius: "20px",
 };
 
 const focusedStyle = {
@@ -32,7 +36,7 @@ const rejectStyle = {
 
 export function Basic({ onUpload }) {
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
-    useDropzone({ accept: { "image/*": [] }, onDrop: onUpload });
+    useDropzone({ accept: { "audio/*": [] }, onDrop: onUpload });
 
   const style = useMemo(
     () => ({
@@ -48,7 +52,7 @@ export function Basic({ onUpload }) {
     <div className="container">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} onChange={onUpload} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <FiUploadCloud className="scale-[2.5] text-red-500 font-light" />
       </div>
     </div>
   );

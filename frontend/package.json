@@ -16,7 +16,7 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
-    "wavesurfer.js": "^7.1.5"
+    "wavesurfer.js": "^7.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
