@@ -7,7 +7,7 @@ import Layout from "./Layout";
 import Home from "./pages/Home";
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
-import PrivateRoute from "./components/PrivateRoute";
+import SubmitMusic from "./pages/SubmitMusic";
 
 const fallbackPath = "/login";
 const App = () => {
@@ -39,6 +39,18 @@ const App = () => {
             user ? (
               <Layout>
                 <Home />
+              </Layout>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/submit"
+          element={
+            user ? (
+              <Layout>
+                <SubmitMusic />
               </Layout>
             ) : (
               <Navigate to="/" replace />

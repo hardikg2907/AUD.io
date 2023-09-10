@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { FiHome, FiFolder, FiMusic, FiUser, FiCompass } from "react-icons/fi";
 import logo from "/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [selectedItem, setSelectedItem] = useState("Home");
+  const navigate = useNavigate();
 
   const sideMenu = [
     {
       name: "Home",
       icon: <FiHome />,
+      url: "/home",
     },
     {
       name: "Discover",
@@ -17,6 +20,7 @@ const Sidebar = () => {
     {
       name: "Submit Music",
       icon: <FiMusic />,
+      url: "/submit",
     },
     {
       name: "Submissions",
@@ -39,7 +43,10 @@ const Sidebar = () => {
               ? "bg-[#1E1E1E] tab"
               : "hover:text-gray-300"
           }`}
-          onClick={() => setSelectedItem(item?.name)}
+          onClick={() => {
+            setSelectedItem(item?.name);
+            navigate(item.url);
+          }}
         >
           {item?.icon}
           <p>{item?.name}</p>
