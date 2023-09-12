@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { FiUploadCloud } from "react-icons/fi";
 
 const baseStyle = {
-  flex: 1,
+  // flex: 1,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -17,7 +17,7 @@ const baseStyle = {
   outline: "none",
   transition: "border .24s ease-in-out",
   cursor: "pointer",
-  width: "12.5%",
+  // width: "12.5%",
   height: "100px",
   borderRadius: "20px",
 };
@@ -49,7 +49,7 @@ export function Basic({ onUpload }) {
   );
 
   return (
-    <div className="container">
+    <div className="container w-32">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} onChange={onUpload} />
         <FiUploadCloud className="scale-[2.5] text-red-500 font-light" />

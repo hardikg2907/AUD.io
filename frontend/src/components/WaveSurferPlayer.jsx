@@ -13,13 +13,14 @@ const useWavesurfer = (containerRef, options) => {
       ...options,
       container: containerRef.current,
     });
+    console.log(ws);
 
     setWavesurfer(ws);
 
     return () => {
       ws.destroy();
     };
-  }, [options, containerRef]);
+  }, [containerRef]);
 
   return wavesurfer;
 };
@@ -47,16 +48,23 @@ const WaveSurferPlayer = (props) => {
       wavesurfer.on("play", () => setIsPlaying(true)),
       wavesurfer.on("pause", () => setIsPlaying(false)),
       wavesurfer.on("timeupdate", (currentTime) => setCurrentTime(currentTime)),
+      wavesurfer.on("zoom", () => console.log('object'))
     ];
+
+    wavesurfer.setPlaybackRate(props.audioRate)
+    console.log(props.audioRate);
+    console.log(props.minPxPerSec);
+    const options = { minPxPerSec: props.minPxPerSec }
+    wavesurfer.setOptions(options)
 
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [wavesurfer]);
+  }, [wavesurfer, props]);
 
   return (
     <div className="text-slate-200">
-      <div ref={containerRef} style={{ minHeight: "120px" }} />
+      <div ref={containerRef} style={{ minHeight: "120px" }} className="bg-black" />
 
       <button onClick={onPlayClick} style={{ marginTop: "1em" }}>
         {isPlaying ? "Pause" : "Play"}
