@@ -43,6 +43,7 @@ const WaveSurferPlayer = (props) => {
 
     setCurrentTime(0);
     setIsPlaying(false);
+    console.log(props)
 
     const subscriptions = [
       wavesurfer.on("play", () => setIsPlaying(true)),
@@ -50,12 +51,8 @@ const WaveSurferPlayer = (props) => {
       wavesurfer.on("timeupdate", (currentTime) => setCurrentTime(currentTime)),
       wavesurfer.on("zoom", () => console.log('object'))
     ];
+    wavesurfer.setOptions(props)
 
-    wavesurfer.setPlaybackRate(props.audioRate)
-    console.log(props.audioRate);
-    console.log(props.minPxPerSec);
-    const options = { minPxPerSec: props.minPxPerSec }
-    wavesurfer.setOptions(options)
 
     return () => {
       subscriptions.forEach((unsub) => unsub());
