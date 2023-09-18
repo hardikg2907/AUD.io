@@ -10,12 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.83.9",
+    "@react-three/fiber": "^8.14.2",
     "@tanstack/react-query": "^4.33.0",
+    "framer-motion": "^10.16.4",
+    "maath": "^0.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
+    "react-tilt": "^1.0.2",
+    "react-vertical-timeline-component": "^3.6.0",
+    "three": "^0.156.1",
     "wavesurfer.js": "^7.3.0"
   },
   "devDependencies": {
