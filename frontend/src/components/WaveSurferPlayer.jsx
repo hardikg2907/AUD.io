@@ -1,5 +1,7 @@
 import WaveSurfer from "wavesurfer.js";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { AiOutlinePause } from "react-icons/ai";
+import { BsFillPlayFill } from "react-icons/bs";
 
 const useWavesurfer = (containerRef, options) => {
   const [wavesurfer, setWavesurfer] = useState(null);
@@ -43,16 +45,15 @@ const WaveSurferPlayer = (props) => {
 
     setCurrentTime(0);
     setIsPlaying(false);
-    console.log(props)
+    console.log(props);
 
     const subscriptions = [
       wavesurfer.on("play", () => setIsPlaying(true)),
       wavesurfer.on("pause", () => setIsPlaying(false)),
       wavesurfer.on("timeupdate", (currentTime) => setCurrentTime(currentTime)),
-      wavesurfer.on("zoom", () => console.log('object'))
+      wavesurfer.on("zoom", () => console.log("object")),
     ];
-    wavesurfer.setOptions(props)
-
+    wavesurfer.setOptions(props);
 
     return () => {
       subscriptions.forEach((unsub) => unsub());
@@ -61,10 +62,21 @@ const WaveSurferPlayer = (props) => {
 
   return (
     <div className="text-slate-200">
-      <div ref={containerRef} style={{ minHeight: "120px" }} className="bg-black" />
+      <div
+        ref={containerRef}
+        style={{ minHeight: "120px" }}
+        className="bg-black"
+      />
 
-      <button onClick={onPlayClick} style={{ marginTop: "1em" }}>
-        {isPlaying ? "Pause" : "Play"}
+      <button
+        onClick={onPlayClick}
+        style={{ marginTop: "1em" }}
+        className={
+          "rounded-sm bg-gray-100" +
+          (isPlaying ? " text-black" : " text-red-600")
+        }
+      >
+        {isPlaying ? <AiOutlinePause /> : <BsFillPlayFill />}
       </button>
 
       <p>Seconds played: {currentTime}</p>
