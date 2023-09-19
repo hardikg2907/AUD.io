@@ -1,21 +1,23 @@
 const User = require("../models/user");
+const Submission = require("../models/submission")
 
 // Create a new submission
 exports.createSubmission = async (req, res) => {
   // Extract submission data from the request body
-  const { name, audioFile, genre, artist, description, releaseDate, duration } =
+  const { name, audioFile, genre, artist, description, releaseDate, duration, private, userId } =
     req.body;
-
   try {
     // Find the authenticated user by their ID
-    const user = await User.findById(req.body.userId);
+    let user = await User.find({_id: userId});
+    user=user[0];
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
+    console.log(user);
 
     // Create a new submission object
-    const newSubmission = {
+    const newSubmission = await Submission.create({
       name,
       audioFile,
       genre,
@@ -23,15 +25,18 @@ exports.createSubmission = async (req, res) => {
       description,
       releaseDate,
       duration,
-    };
+      userId,
+      private,
+    });
 
     // Add the new submission to the user's submissions array
-    user.submissions.push(newSubmission);
+    if(!user.submissions) user.submissions=[];
+    user.submissions.push(newSubmission._id);
 
     // Save the user document with the new submission
     await user.save();
 
-    res.json(user.submissions);
+    res.json(newSubmission);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -40,9 +45,10 @@ exports.createSubmission = async (req, res) => {
 
 // Get all submissions for the authenticated user
 exports.getAllSubmissions = async (req, res) => {
+  console.log(req.params);
   try {
-    const user = await User.findById(req.body.userId);
-
+    const user = await User.findOne({_id: req.params.userId}).populate("submissions");
+    
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -56,18 +62,16 @@ exports.getAllSubmissions = async (req, res) => {
 
 // Get a single submission by ID
 exports.getSubmissionById = async (req, res) => {
-  const { submissionId } = req.params;
-
+  const { userId, submissionId } = req.params;
+  console.log(req.params);
   try {
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(userId);
+    const submission = await Submission.findById(submissionId);
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-
-    const submission = user.submissions.id(submissionId);
-
-    if (!submission) {
+    if (!submission || (submission.private && submission.userId.toString()!==user._id.toString())) {
       return res.status(404).json({ msg: "Submission not found" });
     }
 
@@ -80,36 +84,24 @@ exports.getSubmissionById = async (req, res) => {
 
 // Update a submission by ID
 exports.updateSubmission = async (req, res) => {
-  const { submissionId } = req.params;
+  const { userId, submissionId } = req.params;
 
   try {
-    const user = await User.findById(req.body.userId);
-    const submissionBody = req.body;
-    delete submissionBody.userId;
+    const user = await User.findById(userId);
+    let submission = await Submission.findById(submissionId);
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-
-    let submission = user.submissions.id(submissionId);
-
-    if (!submission) {
+    if (!submission || submission.userId.toString()!==user._id.toString()) {
       return res.status(404).json({ msg: "Submission not found" });
     }
 
-    // Update submission fields (example: updating the name)
-    if (req.body.name) {
-      submission.name = req.body.name;
-    }
-    if (req.body.audioFile) {
-      submission.audioFile = req.body.audioFile;
-    }
-    if (req.body.genre) {
-      submission.genre = req.body.genre;
-    }
+    submission=await Submission.findByIdAndUpdate(submissionId, req.body);
+    
     await user.save();
 
-    res.json(submission);
+    res.json(user.submissions);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -118,10 +110,10 @@ exports.updateSubmission = async (req, res) => {
 
 // Delete a submission by ID
 exports.deleteSubmission = async (req, res) => {
-  const { submissionId } = req.params;
+  const { userId, submissionId } = req.params;
 
   try {
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(userId).populate("submissions");
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });

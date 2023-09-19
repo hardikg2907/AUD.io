@@ -6,13 +6,13 @@ const submissionController = require("../controllers/submission");
 router.post("/add", submissionController.createSubmission);
 
 // Get all submissions for the authenticated user
-router.get("/all", submissionController.getAllSubmissions);
+router.get("/all/:userId", submissionController.getAllSubmissions);
 
 // Get a single submission by ID
-router.get("/:submissionId", submissionController.getSubmissionById);
+router.get("/:submissionId/:userId", submissionController.getSubmissionById);
 
-router.put("/:submissionId", submissionController.updateSubmission);
+router.put("/:submissionId/:userId", submissionController.updateSubmission);
 
-router.delete("/:submissionId", submissionController.deleteSubmission);
+router.delete("/:submissionId/:userId", submissionController.deleteSubmission);
 
 module.exports = router;
