@@ -1,20 +1,22 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import StarsCanvas from "../components/Stars";
+import EditAudio from "../components/landing_page/EditAudio";
+import Home from "../components/landing_page/Home";
+import Features from "../components/landing_page/Features";
+import AppFlow from "../components/landing_page/AppFlow";
+import Navbar from "../components/landing_page/Navbar";
 
 const LandingPage = () => {
+
   return (
-    <div className="p-3">
-      <div className="w-full flex gap-2 justify-end">
-        <Link to={"/login"}>
-          <button className="text-white rounded-md bg-transparent px-2 py-1 hover:bg-slate-600 duration-200 ease-out border border-white">
-            Login
-          </button>
-        </Link>
-        <Link to={"/signup"}>
-          <button className="text-white rounded-md bg-transparent px-2 py-1 hover:bg-slate-600 duration-200 ease-out border border-white">
-            Sign up
-          </button>
-        </Link>
+    <div className="bg-black h-screen relative flex flex-col items-center z-10 overflow-hidden">
+      <Navbar/>
+      <div className="h-[90vh] w-screen overflow-y-auto overflow-x-hidden px-3">
+        <Home />
+        <EditAudio />
+        <StarsCanvas />
+        <Features />
+        <AppFlow />
       </div>
     </div>
   );

@@ -25,6 +25,7 @@ const Sidebar = () => {
     {
       name: "Submissions",
       icon: <FiFolder />,
+      url: "/my-submissions",
     },
     {
       name: "Account",
