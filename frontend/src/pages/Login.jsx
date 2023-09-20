@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import StarsCanvas from "../components/Stars";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 
@@ -18,6 +19,8 @@ const Login = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center shadow-2xl">
+      <StarsCanvas />
+
       <form
         className="bg-[#303030] flex py-3 px-3 justify-center flex-col items-center gap-4 rounded-sm w-1/3"
         onSubmit={(e) => {

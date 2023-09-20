@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import WaveSurfer from "wavesurfer.js";
 import WaveSurferPlayer from "../components/WaveSurferPlayer";
 import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
+import RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 import HoverPlugin from "wavesurfer.js/dist/plugins/hover";
 import Slider from "../components/Slider";
 import DropDown from "../components/DropDown";
@@ -12,8 +13,10 @@ const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
+  // console.log(audioUrl);
 
   const onUpload = (files) => {
+    console.log("upload");
     if (files) {
       // Use the FileReader API to read the file and convert it to base64
       const reader = new FileReader();
@@ -34,6 +37,28 @@ const SubmitMusic = () => {
         </div>
       ) : (
         <div>
+          {audioUrl && (
+            <WaveSurferPlayer
+              height={100}
+              waveColor="red"
+              progressColor="#383838"
+              url={audioUrl}
+              onUpload={onUpload}
+              setAudioUrl={setAudioUrl}
+              plugins={[
+                TimelinePlugin.create(),
+                HoverPlugin.create({
+                  lineColor: "#ff0000",
+                  lineWidth: 2,
+                  labelBackground: "#555",
+                  labelColor: "#fff",
+                  labelSize: "11px",
+                }),
+              ]}
+              audioRate={audioRate}
+              minPxPerSec={zoomLevel}
+            />
+          )}
           <div className="flex gap-2 text-white">
             <div>
               Zoom:{" "}
@@ -48,24 +73,6 @@ const SubmitMusic = () => {
               />
             </div>
           </div>
-          <WaveSurferPlayer
-            height={100}
-            waveColor="red"
-            progressColor="#383838"
-            url={audioUrl}
-            plugins={[
-              TimelinePlugin.create(),
-              HoverPlugin.create({
-                lineColor: "#ff0000",
-                lineWidth: 2,
-                labelBackground: "#555",
-                labelColor: "#fff",
-                labelSize: "11px",
-              }),
-            ]}
-            audioRate={audioRate}
-            minPxPerSec={zoomLevel}
-          />
         </div>
       )}
     </>
