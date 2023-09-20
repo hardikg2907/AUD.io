@@ -187,19 +187,23 @@ const WaveSurferPlayer = (props) => {
     let arraybuffer = bufferToWav(newAudioBuffer, 0, newAudioBuffer?.length);
     wavesurfer?.load(arraybuffer);
     // props?.setAudioUrl(arraybuffer);
-    // fetch(arraybuffer)
-    //   .then((res) => res.blob())
-    //   .then((blob) => {
-    //     const file = new File([blob], "File name", { type: "audio/wav" });
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => {
-    //       props?.setAudioUrl(reader.result);
-    //     };
-    //     reader.readAsDataURL(file);
-    //     // props?.onUpload([file]);
-    //     // console.log(file);
-    //   });
-    props?.setFormData((prev) => ({ ...prev, audioFile: arraybuffer }));
+    fetch(arraybuffer)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const file = new File([blob], "File name", { type: "audio/wav" });
+        console.log(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // props?.setAudioUrl(reader.result);
+          props?.setFormData((prev) => ({
+            ...prev,
+            audioFile: reader.result,
+          }));
+        };
+        reader.readAsDataURL(file);
+        // props?.onUpload([file]);
+        // console.log(file);
+      });
   };
   return (
     <div className="text-slate-200">

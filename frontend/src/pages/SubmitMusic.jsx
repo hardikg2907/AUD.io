@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Basic } from "../components/FileUpload";
 import Header from "../components/Header";
 import WaveSurfer from "wavesurfer.js";
@@ -8,6 +8,10 @@ import RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 import HoverPlugin from "wavesurfer.js/dist/plugins/hover";
 import Slider from "../components/Slider";
 import DropDown from "../components/DropDown";
+import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
+import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -19,7 +23,29 @@ const SubmitMusic = () => {
   });
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
+  }, [audioUrl]);
   // console.log(audioUrl);
+
+  const submit = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/submissions/add",
+        {
+          ...formData,
+          userId: user._id,
+        }
+      );
+
+      navigate("/my-submissions");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onUpload = (files) => {
     console.log("upload");
@@ -43,7 +69,7 @@ const SubmitMusic = () => {
         </div>
       ) : (
         <div>
-          <div className="">
+          <div className="flex gap-3 justify-start items-start">
             <input
               type="text"
               placeholder="   Name"
@@ -54,6 +80,18 @@ const SubmitMusic = () => {
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
             />
+            <button
+              onClick={() =>
+                setFormData((prev) => ({ ...prev, private: !prev.private }))
+              }
+              className="bg-transparen p-1 rounded-md hover:bg-[#383838] duration-200"
+            >
+              {formData?.private ? (
+                <BsFillLockFill className="text-red-600" />
+              ) : (
+                <BsFillUnlockFill className="text-green-600" />
+              )}
+            </button>
           </div>
           {audioUrl && (
             <WaveSurferPlayer
@@ -92,7 +130,10 @@ const SubmitMusic = () => {
               />
             </div>
           </div>
-          <button className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600">
+          <button
+            onClick={submit}
+            className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+          >
             Submit
           </button>
         </div>
