@@ -3,17 +3,6 @@ const bcrypt = require("bcrypt");
 
 // const validator = require('validator')
 
-const submissionSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  audioFile: { type: String, required: true }, // You can store the file path or URL
-  genre: { type: String }, // Genre of the music
-  artist: { type: String }, // Artist name
-  description: { type: String }, // Description of the submission
-  releaseDate: { type: Date }, // Release date of the music
-  duration: { type: Number }, // Duration of the audio in seconds
-  // Add more fields as needed
-});
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,7 +15,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  submissions: [submissionSchema],
+  submissions: [{type: mongoose.SchemaTypes.ObjectId, ref: 'Submission'}],
 });
 
 //static signup method
