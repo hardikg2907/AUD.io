@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
-  console.log(req.body);
 
   try {
     let user = await User.findOne({ $or: [{ email }, { username }] });
@@ -21,7 +20,6 @@ const register = async (req, res) => {
       email,
       password: hash,
     });
-
     const payload = {
       user: {
         id: user._id,
@@ -30,7 +28,7 @@ const register = async (req, res) => {
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token, ...user });
+      res.json({ token, _id: user._id, username: user.username });
     });
   } catch (err) {
     console.error(err.message);
@@ -61,8 +59,7 @@ const login = async (req, res) => {
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      console.log(user);
-      res.json({ token, ...user });
+      res.json({ token, _id: user._id, username: user.username });
     });
   } catch (err) {
     console.error(err.message);

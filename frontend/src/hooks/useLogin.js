@@ -17,17 +17,17 @@ export const useLogin = () => {
       email,
       password,
     });
-    const json = await response.json();
+    const json = await response.data;
     console.log(json);
-    setError(json.error);
-    if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
-    }
-    if (response.ok) localStorage.setItem("profile", JSON.stringify(json));
+    // setError(json.error);
+    // if (!response.ok) {
+    //   setIsLoading(false);
+    //   setError(json.error);
+    //   setTimeout(() => {
+    //     setError(null);
+    //   }, 2000);
+    // }
+    localStorage.setItem("profile", JSON.stringify(json));
     // save the user to local storage
     // localStorage.setItem(
     //   "profile",

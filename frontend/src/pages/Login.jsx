@@ -13,7 +13,6 @@ const Login = () => {
   const { login, isLoading, error } = useLogin();
   const [formData, setFormData] = useState({
     email: "",
-    name: "",
     password: "",
   });
 
