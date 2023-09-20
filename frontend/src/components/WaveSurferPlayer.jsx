@@ -199,7 +199,7 @@ const WaveSurferPlayer = (props) => {
     //     // props?.onUpload([file]);
     //     // console.log(file);
     //   });
-    console.log(wavesurfer?.decodedData);
+    props?.setFormData((prev) => ({ ...prev, audioFile: arraybuffer }));
   };
   return (
     <div className="text-slate-200">

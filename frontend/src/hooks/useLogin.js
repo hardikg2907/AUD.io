@@ -1,45 +1,93 @@
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const useLogin = () => {
-    const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(null)
-    const {dispatch} = useAuthContext()
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
 
-    const login = async ({email,password}) => {
-        setIsLoading(true)
-        setError(null)
+  const login = async ({ email, password }) => {
+    setIsLoading(true);
+    setError(null);
 
-        // const response = await fetch('/api/login', {
-        //     method: 'POST',
-        //     headers: {'Content-type': 'application/json'},
-        //     body: JSON.stringify({email, password}),
-
-        // })
-        // const json = await response.json()
-        // console.log(json)
-        // setError(json.error)
-        // localStorage.setItem('profile', {name: 'Hardik Garg'})
-        // if(!response.ok)
-        // {
-        //     setIsLoading(false)
-        //     setError(json.error)
-        //     setTimeout(()=>{
-        //         setError(null)
-        //     },2000)
-        // }
-        // if(response.ok) {
-            // save the user to local storage
-            // localStorage.setItem('profile', JSON.stringify(json))
-            localStorage.setItem('profile', JSON.stringify({email: 'hardikg2907@gmail.com'}))
-
-            // update the auth context
-            // dispatch({type: 'LOGIN', payload: json})
-
-            setIsLoading(false)
-            return true
-        // }
+    const response = await axios.post("http://localhost:5000/api/auth/login", {
+      email,
+      password,
+    });
+    const json = await response.json();
+    console.log(json);
+    setError(json.error);
+    if (!response.ok) {
+      setIsLoading(false);
+      setError(json.error);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
     }
+    if (response.ok) localStorage.setItem("profile", JSON.stringify(json));
+    // save the user to local storage
+    // localStorage.setItem(
+    //   "profile",
+    //   JSON.stringify({ email: "hardikg2907@gmail.com" })
+    // );
+    // navigate("/home");
 
-    return { login, isLoading, error}
-}
+    // update the auth context
+    dispatch({ type: "LOGIN", payload: json });
+
+    setIsLoading(false);
+    return true;
+    // }
+  };
+
+  return { login, isLoading, error };
+};
+export const useRegister = () => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
+
+  const register = async ({ email, password, username }) => {
+    setIsLoading(true);
+    setError(null);
+
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/register",
+      {
+        email,
+        password,
+        username,
+      }
+    );
+    const json = await response.data;
+    console.log(json);
+    // setError(json.error);
+    // if (!response.ok) {
+    //   setIsLoading(false);
+    //   setError(json.error);
+    //   setTimeout(() => {
+    //     setError(null);
+    //   }, 2000);
+    // }
+    localStorage.setItem("profile", JSON.stringify(json));
+    // save the user to local storage
+    // localStorage.setItem(
+    //   "profile",
+    //   JSON.stringify({ email: "hardikg2907@gmail.com" })
+    // );
+    // navigate("/home");
+
+    // update the auth context
+    dispatch({ type: "LOGIN", payload: json });
+
+    setIsLoading(false);
+    return true;
+    // }
+  };
+
+  return { register, isLoading, error };
+};

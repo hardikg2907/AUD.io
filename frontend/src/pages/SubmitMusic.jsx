@@ -11,6 +11,12 @@ import DropDown from "../components/DropDown";
 
 const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "Untitled",
+    audioFile: "",
+    private: false,
+    userId: "",
+  });
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
   // console.log(audioUrl);
@@ -37,6 +43,18 @@ const SubmitMusic = () => {
         </div>
       ) : (
         <div>
+          <div className="">
+            <input
+              type="text"
+              placeholder="   Name"
+              required
+              className="bg-transparent focus:outline-none rounded-sm focus:outline-red-600 text-red-600 mb-10"
+              value={formData?.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
+          </div>
           {audioUrl && (
             <WaveSurferPlayer
               height={100}
@@ -56,6 +74,7 @@ const SubmitMusic = () => {
                 }),
               ]}
               audioRate={audioRate}
+              setFormData={setFormData}
               minPxPerSec={zoomLevel}
             />
           )}
@@ -73,6 +92,9 @@ const SubmitMusic = () => {
               />
             </div>
           </div>
+          <button className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600">
+            Submit
+          </button>
         </div>
       )}
     </>

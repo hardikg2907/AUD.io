@@ -4,34 +4,33 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
+  console.log(req.body);
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ $or: [{ email }, { username }] });
 
     if (user) {
       return res.status(400).json({ msg: "User already exists" });
     }
 
-    user = new User({
+    const salt = await bcrypt.genSalt(10);
+    let hash = await bcrypt.hash(password, salt);
+
+    user = await User.create({
       username,
       email,
-      password,
+      password: hash,
     });
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
 
     const payload = {
       user: {
-        id: user.id,
+        id: user._id,
       },
     };
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, ...user });
     });
   } catch (err) {
     console.error(err.message);
@@ -56,14 +55,14 @@ const login = async (req, res) => {
 
     const payload = {
       user: {
-        id: user.id,
+        id: user._id,
       },
     };
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
       console.log(user);
-      res.json({ token });
+      res.json({ token, ...user });
     });
   } catch (err) {
     console.error(err.message);
