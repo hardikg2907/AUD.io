@@ -72,7 +72,7 @@ const Discover = () => {
               </a>
             </div>
             {/* <div className=""> */}
-            <BsFillFileEarmarkMusicFill className="scale-[300%] text-[#c7c7c7]" />
+            <BsFillFileEarmarkMusicFill className="mb-2 scale-[300%] text-[#c7c7c7]" />
             <div className="bg-[#383838] absolute self-end z-10 flex justify-between shadow items-center w-full px-2 py-1 h-1/5">
               <p className="text-lg font-semibold truncate">
                 {submission.name}
