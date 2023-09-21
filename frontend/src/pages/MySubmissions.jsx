@@ -16,6 +16,27 @@ const MySubmissions = () => {
     );
     if (res) setSubmissions(res?.data);
   };
+
+  const downloadMedia = (media) => {
+    (async () => {
+      let response = await fetch(media?.data);
+      let data = await response.blob();
+      let metadata = {
+        type: media?.type,
+      };
+      let file = new File([data], media?.name, metadata);
+
+      const url = window.URL.createObjectURL(file);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      // the filename you want
+      a.download = media?.name;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })();
+  };
   useEffect(() => {
     // Fetch user submissions from the API
     // fetch(API_URL, {
