@@ -19,14 +19,14 @@ const MySubmissions = () => {
     if (res) setSubmissions(res?.data);
   };
 
-  const downloadMedia = (media) => {
+  const downloadMedia = (media, name) => {
     (async () => {
-      let response = await fetch(media?.data);
+      let response = await fetch(media);
       let data = await response.blob();
       let metadata = {
         type: media?.type,
       };
-      let file = new File([data], media?.name, metadata);
+      let file = new File([data], `${name}.mp3`, { type: "audio/mp3" });
 
       const url = window.URL.createObjectURL(file);
       const a = document.createElement("a");
@@ -65,20 +65,27 @@ const MySubmissions = () => {
             className="hover:shadow-lg transition transform hover:-translate-y-2 cursor-pointer rounded-lg overflow-hidden w-32 h-32 flex justify-center items-center bg-[#3f3f3f] group duration-300 ease-in-out opacity-80 hover:opacity-100 px-2"
             onClick={()=>navigate(`/my-submissions/${submission._id}`)}
           >
-            <div className="absolute w-full flex justify-end">
-              <button className="bg-gray-200 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">
-                <AiOutlineCloudDownload />
-              </button>
+            <div className="absolute w-full flex justify-end top-2 mr-2">
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  downloadMedia(submission?.audioFile, submission?.name);
+                }}
+              >
+                <button className="bg-gray-200 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">
+                  <AiOutlineCloudDownload />
+                </button>
+              </a>
             </div>
             {/* <div className=""> */}
             <BsFillFileEarmarkMusicFill className="scale-[300%] text-[#c7c7c7]" />
-            <div className="bg-[#383838] absolute self-end z-10 flex justify-between shadow items-center w-full px-2 h-1/5">
+            <div className="bg-[#383838] absolute self-end z-10 flex justify-between shadow items-center w-full px-2 py-1 h-1/5">
               <p className="text-lg font-semibold mb-2 text-clip">
                 {submission.name}
               </p>
-              <button className="bg-[#1FDF64] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">
+              {/* <button className="bg-[#1FDF64] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">
                 <BsFillPlayFill className="scale-[150%]" />
-              </button>
+              </button> */}
             </div>
             {/* <p className="text-gray-600 mb-1">{submission.artist}</p>
               <p className="text-gray-600">{submission.genre}</p> */}
