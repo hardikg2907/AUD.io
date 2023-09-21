@@ -74,7 +74,7 @@ const Discover = () => {
             {/* <div className=""> */}
             <BsFillFileEarmarkMusicFill className="scale-[300%] text-[#c7c7c7]" />
             <div className="bg-[#383838] absolute self-end z-10 flex justify-between shadow items-center w-full px-2 py-1 h-1/5">
-              <p className="text-lg font-semibold mb-2 text-clip">
+              <p className="text-lg font-semibold truncate">
                 {submission.name}
               </p>
               {/* <button className="bg-[#1FDF64] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">

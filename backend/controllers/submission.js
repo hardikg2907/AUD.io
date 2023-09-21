@@ -140,7 +140,9 @@ exports.deleteSubmission = async (req, res) => {
 
 exports.discover = async (req, res) => {
   try {
-    const submissions = await Submission.find().populate("userId"); // Populate the user field with the username
+    const submissions = await Submission.find({ private: false }).populate(
+      "userId"
+    ); // Populate the user field with the username
 
     res.json(submissions);
   } catch (err) {
