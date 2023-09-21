@@ -137,3 +137,14 @@ exports.deleteSubmission = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.discover = async (req, res) => {
+  try {
+    const submissions = await Submission.find().populate("userId"); // Populate the user field with the username
+
+    res.json(submissions);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};

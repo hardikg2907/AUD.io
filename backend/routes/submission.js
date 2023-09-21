@@ -15,4 +15,6 @@ router.put("/:submissionId/:userId", submissionController.updateSubmission);
 
 router.delete("/:submissionId/:userId", submissionController.deleteSubmission);
 
+router.get("/discover", submissionController.discover);
+
 module.exports = router;
