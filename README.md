@@ -36,3 +36,9 @@ Getting started with AUD.io is simple:
 ## Join Us
 
 AUD.io is more than just a platform; it's a community. Whether you're here to share or discover, we're glad to have you. Dive in and explore the world of audio with us!
+
+## Flowchart
+
+![Screenshot from 2023-09-21 12-00-14](https://github.com/hardikg2907/AUD.io/assets/96012817/6dcaa51f-b05f-4f41-8f63-7791b7405cb6)
+
+
