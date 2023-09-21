@@ -69,6 +69,7 @@ const MySubmissions = () => {
               <a
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   downloadMedia(submission?.audioFile, submission?.name);
                 }}
               >

@@ -45,11 +45,10 @@ const EditMusic = () => {
 
   const submit = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/submissions/add",
+      const res = await axios.put(
+        `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
         {
-          ...formData,
-          userId: user._id,
+          ...formData
         }
       );
 
@@ -74,9 +73,8 @@ const EditMusic = () => {
     <>
       {!audioUrl ? (
         <div className="w-full h-full overflow-hidden">
-          <div className="flex flex-col justify-center items-center scale-150 h-full">
-            <Header title={"Submit Music"} subTitle={"Submit music here"} />
-            <Basic onUpload={onUpload} />
+          <div className="flex flex-col justify-center items-center scale-150 h-full text-red-600">
+            Loading...
           </div>
         </div>
       ) : (
