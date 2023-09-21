@@ -62,10 +62,8 @@ const MySubmissions = () => {
             key={submission._id}
             className="hover:shadow-lg transition transform hover:-translate-y-2 cursor-pointer rounded-lg overflow-hidden w-32 h-32 flex justify-center items-center bg-[#3f3f3f] group duration-300 ease-in-out opacity-80 hover:opacity-100 px-2"
           >
-            <div className="absolute w-full flex justify-end">
+            <div className="absolute w-full flex justify-end top-2 mr-2">
               <a
-                // download
-                // href={submission.audioFile}
                 onClick={(e) => {
                   e.preventDefault();
                   downloadMedia(submission?.audioFile, submission?.name);
