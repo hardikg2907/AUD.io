@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { BsFillFileEarmarkMusicFill, BsFillPlayFill } from "react-icons/bs";
 import { AiOutlineCloudDownload } from "react-icons/ai";
+import {useNavigate} from "react-router-dom"
 
 // Replace this with your API URL for fetching user submissions
 
 const MySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   const { user } = useAuthContext();
+  const navigate=useNavigate();
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -61,6 +63,7 @@ const MySubmissions = () => {
           <div
             key={submission._id}
             className="hover:shadow-lg transition transform hover:-translate-y-2 cursor-pointer rounded-lg overflow-hidden w-32 h-32 flex justify-center items-center bg-[#3f3f3f] group duration-300 ease-in-out opacity-80 hover:opacity-100 px-2"
+            onClick={()=>navigate(`/my-submissions/${submission._id}`)}
           >
             <div className="absolute w-full flex justify-end">
               <button className="bg-gray-200 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 invisible group-hover:visible">
