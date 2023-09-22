@@ -16,6 +16,7 @@ const Sidebar = () => {
     {
       name: "Discover",
       icon: <FiCompass />,
+      url: "/discover",
     },
     {
       name: "Submit Music",

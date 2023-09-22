@@ -3,6 +3,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { useRegister } from "../hooks/useLogin";
+import StarsCanvas from "../components/Stars";
 
 const inputStyling =
   "w-full bg-[#383838] rounded-lg h-10 p-2 focus:outline-none";
@@ -18,6 +19,8 @@ const SignUp = () => {
   const [checked, setChecked] = useState(false);
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center shadow-2xl">
+      <StarsCanvas />
+
       <form
         className="bg-[#303030] flex py-2 px-3 justify-center flex-col items-center gap-4 rounded-sm w-1/3"
         onSubmit={(e) => {

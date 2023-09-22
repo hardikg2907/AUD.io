@@ -42,6 +42,7 @@ const Login = () => {
 
         <div className="flex flex-col gap-2 w-full text-xs text-white">
           <input
+            autoFocus
             type="email"
             placeholder="Email"
             className={inputStyling}
