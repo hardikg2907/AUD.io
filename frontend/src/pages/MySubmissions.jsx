@@ -17,6 +17,7 @@ const MySubmissions = () => {
       `http://localhost:5000/api/submissions/all/${user._id}`
     );
     if (res) setSubmissions(res?.data);
+    console.log(submissions);
   };
 
   useEffect(() => {
