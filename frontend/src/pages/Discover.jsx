@@ -11,7 +11,8 @@ const Discover = () => {
     );
     console.log(res?.data);
     if (res) setSubmissions(res?.data);
-  };
+  }
+
   useEffect(() => {
     // Fetch user submissions from the API
     // fetch(API_URL, {
@@ -23,9 +24,11 @@ const Discover = () => {
     //   .then((response) => response.json())
     //   .then((data) => setSubmissions(data))
     //   .catch((error) => console.error("Error fetching data:", error));
-    if (!submissions.length)
+    if (submissions.length === 0) {
       fetchData();
-  }, [submissions]);
+    }
+  }, [])
+  
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-semibold mb-4 text-gray-200">Discover</h1>

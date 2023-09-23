@@ -40,9 +40,9 @@ const Sidebar = () => {
       {sideMenu?.map((item) => (
         <div
           key={item.name}
-          className={`flex flex-col text-[#7B7B7B] cursor-pointer transition-[color] duration-300 ease-in-out w-full items-center py-5 text-center  text-[0.7rem] ${
+          className={`flex flex-col text-[#7B7B7B] cursor-pointer transition-[color] duration-300 ease-in-out w-full items-center py-5 text-center text-[0.7rem] ${
             window.location.pathname?.includes(item?.url)
-              ? "bg-[#1E1E1E] tab"
+              ? "bg-[#1E1E1E] text-gray-300 tab"
               : "hover:text-gray-300"
           }`}
           onClick={() => {            
