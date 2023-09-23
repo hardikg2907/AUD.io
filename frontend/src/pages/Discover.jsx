@@ -14,6 +14,7 @@ const Discover = () => {
     const res = await axios.get(
       `http://localhost:5000/api/submissions/discover`
     );
+    console.log(res?.data);
     if (res) setSubmissions(res?.data);
   };
   const downloadMedia = (media, name) => {
@@ -52,7 +53,7 @@ const Discover = () => {
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-semibold mb-4 text-gray-200">Discover</h1>
-      <div className="grid grid-cols-8 gap-1">
+      <div className="flex gap-4 flex-wrap">
         {submissions.map((submission) => (
           <div
             key={submission._id}
