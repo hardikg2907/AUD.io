@@ -26,7 +26,6 @@ const EditMusic = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const params=useParams();
-  console.log(params.id);
   const fetchData= async ()=>{
     const res = await axios.get(`http://localhost:5000/api/submissions/${params?.id}/${user?._id}`)
     if(res?.data) {
