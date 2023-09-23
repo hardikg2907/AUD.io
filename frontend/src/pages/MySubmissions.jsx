@@ -16,8 +16,8 @@ const MySubmissions = () => {
     const res = await axios.get(
       `http://localhost:5000/api/submissions/all/${user._id}`
     );
-    if (res) setSubmissions(res?.data);
-    console.log(submissions);
+    console.log(res?.data);
+    if (res) setSubmissions(res?.data);    
   };
 
   useEffect(() => {
