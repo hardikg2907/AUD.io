@@ -7,10 +7,10 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
     </div>
     <div className="w-[50%]">
       <p className="truncate text-white font-bold text-lg">
-        {activeSong?.title ? activeSong?.title : 'No active Song'}
+        {activeSong?.name ? activeSong?.name : 'No active Song'}
       </p>
       <p className="truncate text-gray-300">
-        {activeSong?.subtitle ? activeSong?.subtitle : 'No active Song'}
+        {activeSong?.userId?.username ? activeSong?.userId?.username : 'No active Song'}
       </p>
     </div>
   </div>

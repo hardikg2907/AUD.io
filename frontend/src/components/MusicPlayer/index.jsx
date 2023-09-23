@@ -10,50 +10,42 @@ import { useMusicContext } from '../../context/MusicContext';
 
 const MusicPlayer = () => {
   // const { activeSong, currentSongs, currentIndex, isActive, isPlaying } = useSelector((state) => state.player);
-  const { isPlaying, setIsPlaying, activeSong, setActiveSong } = useMusicContext()
+  const { isPlaying, setIsPlaying, activeSong, setActiveSong, currentSongs, currentIndex, setCurrentIndex, handleShuffle } = useMusicContext()
   // const [isPlaying, setIsPlaying] = useState(true)
   const [isActive, setIsActive] = useState(true)
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
   const [volume, setVolume] = useState(1);
-  const [repeat, setRepeat] = useState(false);
-  const [shuffle, setShuffle] = useState(false);
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (currentSongs.length) dispatch(playPause(true));
-  // }, [currentIndex]);
+  const [repeat, setRepeat] = useState(false);  
 
   const handlePlayPause = () => {
-    // if (!isActive) return;
-
-    // if (isPlaying) {
-    //   dispatch(playPause(false));
-    // } else {
-    //   dispatch(playPause(true));
-    // }
-    setIsPlaying((prev)=>!prev)
+    setIsPlaying((prev) => !prev)
   };
 
   const handleNextSong = () => {
-    // dispatch(playPause(false));
-
-    // if (!shuffle) {
-    //   dispatch(nextSong((currentIndex + 1) % currentSongs.length));
-    // } else {
-    //   dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
-    // }
+    // console.log(currentSongs);
+    if (currentIndex === currentSongs.length - 1) {
+      setCurrentIndex(0)
+      setActiveSong(currentSongs[0])
+    }
+    else {
+      setCurrentIndex(currentIndex + 1)
+      // console.log(currentSongs[currentIndex + 1]);
+      setActiveSong(currentSongs[currentIndex + 1])
+    }
   };
 
   const handlePrevSong = () => {
-    // if (currentIndex === 0) {
-    //   dispatch(prevSong(currentSongs.length - 1));
-    // } else if (shuffle) {
-    //   dispatch(prevSong(Math.floor(Math.random() * currentSongs.length)));
-    // } else {
-    //   dispatch(prevSong(currentIndex - 1));
-    // }
+    // console.log(currentSongs);
+    if (currentIndex === 0) {
+      setCurrentIndex(0)
+      setActiveSong(currentSongs[currentSongs.length - 1])
+    }
+    else {
+      setCurrentIndex(currentIndex - 1)
+      setActiveSong(currentSongs[currentIndex - 1])
+    }
   };
 
   return (
@@ -65,12 +57,11 @@ const MusicPlayer = () => {
           isActive={isActive}
           repeat={repeat}
           setRepeat={setRepeat}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
-          // currentSongs={currentSongs}
+          currentSongs={currentSongs}
           handlePlayPause={handlePlayPause}
           handlePrevSong={handlePrevSong}
           handleNextSong={handleNextSong}
+          handleShuffle={handleShuffle}
         />
         <Seekbar
           value={appTime}
@@ -86,7 +77,7 @@ const MusicPlayer = () => {
           isPlaying={isPlaying}
           seekTime={seekTime}
           repeat={repeat}
-          // currentIndex={currentIndex}
+          currentIndex={currentIndex}
           onEnded={handleNextSong}
           onTimeUpdate={(event) => setAppTime(event.target.currentTime)}
           onLoadedData={(event) => setDuration(event.target.duration)}

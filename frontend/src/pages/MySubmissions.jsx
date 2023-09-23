@@ -41,7 +41,7 @@ const MySubmissions = () => {
       </h1>
       <div className="flex gap-4 flex-wrap">
         {submissions.map((submission) => (
-          <AudioTile key={submission._id} submission={submission} setRender={setRender} page="mySub"/>
+          <AudioTile key={submission._id} submission={submission} setRender={setRender} page="mySub" allSongs={submissions}/>
         ))}
       </div>
     </div>

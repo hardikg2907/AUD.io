@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {  
   const navigate = useNavigate();
-  console.log(window.location.pathname);
+  // console.log(window.location.pathname);
 
   const sideMenu = [
     {
