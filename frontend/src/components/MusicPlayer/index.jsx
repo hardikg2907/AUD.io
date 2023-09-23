@@ -85,7 +85,11 @@ const MusicPlayer = () => {
         />
       </div>
       <VolumeBar value={volume} min="0" max="1" onChange={(event) => setVolume(event.target.value)} setVolume={setVolume} />
-      <div className='absolute top-2 -right-5 p-1 rounded-full bg-white cursor-pointer text-base' onClick={()=>setActiveSong(null)}>
+      <div
+        className='absolute top-2 -right-5 p-1 rounded-full bg-white cursor-pointer text-base'
+        onClick={() => setActiveSong(null)}
+        title='Close player'
+      >
         <AiOutlineClose />
       </div>
     </div>
