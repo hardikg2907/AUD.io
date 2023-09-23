@@ -9,6 +9,8 @@ import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import SubmitMusic from "./pages/SubmitMusic";
 import MySubmissions from "./pages/MySubmissions";
+import EditMusic from "./pages/EditMusic";
+import Discover from "./pages/Discover";
 
 const fallbackPath = "/login";
 const App = () => {
@@ -47,6 +49,7 @@ const App = () => {
           }
         />
         <Route
+          exact
           path="/submit"
           element={
             user ? (
@@ -59,11 +62,36 @@ const App = () => {
           }
         />
         <Route
+          exact
           path="/my-submissions"
           element={
             user ? (
               <Layout>
                 <MySubmissions />
+              </Layout>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/my-submissions/:id"
+          element={
+            user ? (
+              <Layout>
+                <EditMusic />
+              </Layout>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/discover"
+          element={
+            user ? (
+              <Layout>
+                <Discover />
               </Layout>
             ) : (
               <Navigate to="/" replace />
