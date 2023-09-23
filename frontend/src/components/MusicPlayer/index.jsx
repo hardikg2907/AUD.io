@@ -7,6 +7,7 @@ import Seekbar from './Seekbar';
 import Track from './Track';
 import VolumeBar from './VolumeBar';
 import { useMusicContext } from '../../context/MusicContext';
+import { AiOutlineClose } from 'react-icons/ai'
 
 const MusicPlayer = () => {
   // const { activeSong, currentSongs, currentIndex, isActive, isPlaying } = useSelector((state) => state.player);
@@ -17,7 +18,7 @@ const MusicPlayer = () => {
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
   const [volume, setVolume] = useState(1);
-  const [repeat, setRepeat] = useState(false);  
+  const [repeat, setRepeat] = useState(false);
 
   const handlePlayPause = () => {
     setIsPlaying((prev) => !prev)
@@ -84,6 +85,9 @@ const MusicPlayer = () => {
         />
       </div>
       <VolumeBar value={volume} min="0" max="1" onChange={(event) => setVolume(event.target.value)} setVolume={setVolume} />
+      <div className='absolute top-2 -right-5 p-1 rounded-full bg-white cursor-pointer text-base' onClick={()=>setActiveSong(null)}>
+        <AiOutlineClose />
+      </div>
     </div>
   );
 };

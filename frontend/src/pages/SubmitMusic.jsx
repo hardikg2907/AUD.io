@@ -61,7 +61,7 @@ const SubmitMusic = () => {
   return (
     <>
       {!audioUrl ? (
-        <div className="w-full h-full overflow-hidden">
+        <div className="w-full h-4/5 overflow-hidden">
           <div className="flex flex-col justify-center items-center scale-150 h-full">
             <Header title={"Submit Music"} subTitle={"Submit music here"} />
             <Basic onUpload={onUpload} />
