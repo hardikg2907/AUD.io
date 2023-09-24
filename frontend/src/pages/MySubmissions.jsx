@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import {useNavigate} from "react-router-dom"
 import AudioTile from "../components/AudioTile";
+import Loader from "../components/Loader";
 
 // Replace this with your API URL for fetching user submissions
 
@@ -33,6 +34,8 @@ const MySubmissions = () => {
     //   .catch((error) => console.error("Error fetching data:", error));
     fetchData();
   }, [render]);
+
+  if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
 
   return (
     <div className="container mx-auto mt-8">

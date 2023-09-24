@@ -13,6 +13,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { BiSolidCopy } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const EditMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -28,6 +29,7 @@ const EditMusic = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const params = useParams();
+
   const fetchData = async () => {
     setIsLoading(true);
     const res = await axios.get(
@@ -86,118 +88,131 @@ const EditMusic = () => {
       // window.location.reload();
     }
   };
+
+  if (isLoading) return <Loader title={'Loading song details...'} />
+
   return (
-    <>
-      {isLoading ? (
-        <div className="w-full h-full overflow-hidden">
-          <div className="flex flex-col justify-center items-center scale-150 h-full text-red-600">
-            Loading...
+
+    <div className={`w-full ${user?._id !== formData?.userId ? 'h-[90hv]' : 'h-full'}`}>
+      <div className="w-full relative">
+        {user?._id !== formData?.userId && (
+          <div
+            className={
+              "w-full h-[75vh] bg-[#1E1E1E] bg-opacity-[0.85] z-[5] absolute overflow-hidden"
+            }
+          >
+            <div className="flex flex-col w-full h-full items-center justify-center scale-125">
+              <p className="text-2xl text-red-600 font-bold">
+                You Don't have access to edit this music!
+              </p>
+              <div className="flex w-full p-5 justify-center items-center gap-5">
+                <button
+                  onClick={submit}
+                  className="flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+                >
+                  Request Edit Access
+                  <BsFillLockFill />
+                </button>
+                <button
+                  onClick={() => makeCopy()}
+                  className=" flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+                >
+                  Make a Copy
+                  <BiSolidCopy />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="flex gap-3 justify-start items-start">
+          <input
+            type="text"
+            placeholder="   Name"
+            required
+            className="bg-transparent focus:outline-none rounded-sm focus:outline-red-600 text-red-600 mb-10"
+            value={formData?.name}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, name: e.target.value }))
+            }
+          />
+          <button
+            onClick={() =>
+              setFormData((prev) => ({ ...prev, private: !prev.private }))
+            }
+            className="bg-transparen p-1 rounded-md hover:bg-[#383838] duration-200"
+          >
+            {formData?.private ? (
+              <BsFillLockFill className="text-red-600" />
+            ) : (
+              <BsFillUnlockFill className="text-green-600" />
+            )}
+          </button>
+        </div>
+        {audioUrl && (
+          <WaveSurferPlayer
+            height={100}
+            waveColor="red"
+            progressColor="#383838"
+            url={audioUrl}
+            onUpload={onUpload}
+            setAudioUrl={setAudioUrl}
+            plugins={[
+              TimelinePlugin.create(),
+              HoverPlugin.create({
+                lineColor: "#ff0000",
+                lineWidth: 2,
+                labelBackground: "#555",
+                labelColor: "#fff",
+                labelSize: "11px",
+              }),
+            ]}
+            audioRate={audioRate}
+            setFormData={setFormData}
+            minPxPerSec={zoomLevel}
+          />
+        )}
+        <div className="flex gap-2 text-white">
+          <div>
+            Zoom:{" "}
+            <Slider sliderValue={zoomLevel} setSliderValue={setZoomLevel} />
+          </div>
+          <div>
+            Rate:{" "}
+            <DropDown
+              dropValue={audioRate}
+              setDropValue={setAudioRate}
+              options={[0.25, 0.5, 1, 1.25, 1.5, 1.75, 2]}
+            />
           </div>
         </div>
+      </div>
+      {user._id === formData?.userId ? (
+        <button
+          onClick={submit}
+          className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+        >
+          Submit
+        </button>
       ) : (
-        <div className="w-full h-full">
-          <div className="w-full h-1/2 relative">
-            {user?._id !== formData?.userId && (
-              <div
-                className={
-                  "w-full h-full opacity-90 to-[#1e1e1e] from-[#2a2a2a] bg-gradient-to-b z-[5] absolute flex items-start"
-                }
-              >
-                <p className="text-2xl text-red-600 font-bold">
-                  You Don't have access to edit this music!
-                </p>
-              </div>
-            )}
-            <div className="flex gap-3 justify-start items-start">
-              <input
-                type="text"
-                placeholder="   Name"
-                required
-                className="bg-transparent focus:outline-none rounded-sm focus:outline-red-600 text-red-600 mb-10"
-                value={formData?.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-              <button
-                onClick={() =>
-                  setFormData((prev) => ({ ...prev, private: !prev.private }))
-                }
-                className="bg-transparen p-1 rounded-md hover:bg-[#383838] duration-200"
-              >
-                {formData?.private ? (
-                  <BsFillLockFill className="text-red-600" />
-                ) : (
-                  <BsFillUnlockFill className="text-green-600" />
-                )}
-              </button>
-            </div>
-            {audioUrl && (
-              <WaveSurferPlayer
-                height={100}
-                waveColor="red"
-                progressColor="#383838"
-                url={audioUrl}
-                onUpload={onUpload}
-                setAudioUrl={setAudioUrl}
-                plugins={[
-                  TimelinePlugin.create(),
-                  HoverPlugin.create({
-                    lineColor: "#ff0000",
-                    lineWidth: 2,
-                    labelBackground: "#555",
-                    labelColor: "#fff",
-                    labelSize: "11px",
-                  }),
-                ]}
-                audioRate={audioRate}
-                setFormData={setFormData}
-                minPxPerSec={zoomLevel}
-              />
-            )}
-            <div className="flex gap-2 text-white">
-              <div>
-                Zoom:{" "}
-                <Slider sliderValue={zoomLevel} setSliderValue={setZoomLevel} />
-              </div>
-              <div>
-                Rate:{" "}
-                <DropDown
-                  dropValue={audioRate}
-                  setDropValue={setAudioRate}
-                  options={[0.25, 0.5, 1, 1.25, 1.5, 1.75, 2]}
-                />
-              </div>
-            </div>
-          </div>
-          {user._id === formData?.userId ? (
-            <button
-              onClick={submit}
-              className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
-            >
-              Submit
-            </button>
-          ) : (
-            <div className="flex flex-col w-1/5 gap-3">
-              <button
-                onClick={submit}
-                className="flex gap-1 items-center justify-center mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
-              >
-                Request Edit Access
-                <BsFillLockFill />
-              </button>
-              <button
-                onClick={() => makeCopy()}
-                className=" flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
-              >
-                Make A copy
-                <BiSolidCopy />
-              </button>
-            </div>
-          )}
-        </div>
+        // <div className="flex flex-col w-1/5 gap-3">
+        //   <button
+        //     onClick={submit}
+        //     className="flex gap-1 items-center justify-center mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+        //   >
+        //     Request Edit Access
+        //     <BsFillLockFill />
+        //   </button>
+        //   <button
+        //     onClick={() => makeCopy()}
+        //     className=" flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+        //   >
+        //     Make A copy
+        //     <BiSolidCopy />
+        //   </button>
+        // </div>
+        <></>
       )}
-    </>
+    </div>
   );
 };
 
