@@ -37,16 +37,6 @@ const Discover = () => {
     })();
   };
   useEffect(() => {
-    // Fetch user submissions from the API
-    // fetch(API_URL, {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`, // Add your authentication token
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => setSubmissions(data))
-    //   .catch((error) => console.error("Error fetching data:", error));
     fetchData();
   }, []);
   return (
