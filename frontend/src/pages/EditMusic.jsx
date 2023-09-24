@@ -41,7 +41,7 @@ const EditMusic = () => {
   };
   useEffect(() => {
     fetchData();
-  }, [params]);
+  }, [params, user]);
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
