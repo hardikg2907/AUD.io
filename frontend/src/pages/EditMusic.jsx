@@ -13,7 +13,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { BiSolidCopy } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 const EditMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -89,11 +89,14 @@ const EditMusic = () => {
     }
   };
 
-  if (isLoading) return <Loader title={'Loading song details...'} />
+  // if (isLoading) return <Loader title={'Loading song details...'} />
 
   return (
-
-    <div className={`w-full ${user?._id !== formData?.userId ? 'h-[90hv]' : 'h-full'}`}>
+    <div
+      className={`w-full ${
+        user?._id !== formData?.userId ? "h-[90hv]" : "h-full"
+      }`}
+    >
       <div className="w-full relative">
         {user?._id !== formData?.userId && (
           <div

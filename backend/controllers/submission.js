@@ -127,11 +127,13 @@ exports.deleteSubmission = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
+    const submission = await Submission.findByIdAndDelete(submissionId);
+
     user.submissions.pull(submissionId); // Remove the submission by its ID
 
     await user.save();
 
-    res.json(user.submissions);
+    res.json(submission);
   } catch (err) {
     // console.error(err.message);
     res.status(500).send("Server Error");
