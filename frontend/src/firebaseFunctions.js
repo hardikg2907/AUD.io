@@ -6,7 +6,7 @@ import {
   uploadString,
 } from "firebase/storage";
 
-export const handleFileUpload = async (file, name) => {
+export const handleFileUpload = async (file, name, type) => {
   const storageRef = ref(storage, `/audioFiles/${file.name}`);
   //   const uploadTask = uploadBytesResumable(storageRef, file);
   //   uploadTask.on(
@@ -34,7 +34,7 @@ export const handleFileUpload = async (file, name) => {
     //     resolve(downloadUrl);
     //   });
     // });
-    uploadString(storageRef, file, "data_url").then((snapshot) => {
+    uploadString(storageRef, file, type).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((downloadUrl) => {
         resolve(downloadUrl);
       });

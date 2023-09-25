@@ -13,6 +13,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { BiSolidCopy } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import { handleFileUpload } from "../firebaseFunctions";
 // import Loader from "../components/Loader";
 
 const EditMusic = () => {
@@ -36,7 +37,9 @@ const EditMusic = () => {
       `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`
     );
     if (res?.data) {
-      setAudioUrl(res.data?.audioFile);
+      const response = await axios.get(res?.data?.audioFile);
+      console.log(response.data);
+      setAudioUrl(response?.data);
       setFormData((prev) => ({ ...prev, ...res?.data }));
       setIsLoading(false);
     }
@@ -46,19 +49,29 @@ const EditMusic = () => {
   }, [params, user]);
 
   useEffect(() => {
+    console.log(audioUrl);
     setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
   }, [audioUrl]);
 
   const submit = async () => {
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
-        {
-          ...formData,
-        }
-      );
-
-      navigate("/my-submissions");
+      console.log(formData?.audioFile);
+      handleFileUpload(
+        formData?.audioFile,
+        `${formData?.name}.mp3`,
+        "data_url"
+      ).then(async (downloadUrl) => {
+        let url = downloadUrl;
+        console.log(url);
+        const res = await axios.put(
+          `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
+          {
+            ...formData,
+            audioFile: url,
+          }
+        );
+        if (res?.data) navigate("/my-submissions");
+      });
     } catch (error) {
       console.log(error);
     }
