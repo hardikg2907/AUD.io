@@ -35,23 +35,22 @@ const SubmitMusic = () => {
       // console.log(formData?.audioFile);
       const base64response = await fetch(formData?.audioFile);
       const blob = await base64response.blob();
-      const url = await handleFileUpload(
-        new File([blob], `${formData?.name}${new Date()}.mp3`, {
-          type: "audio/mpeg",
-        }),
-        `${formData?.name}.mp3`
+      let url;
+      handleFileUpload(formData?.audioFile, `${formData?.name}.mp3`).then(
+        async (downloadUrl) => {
+          url = downloadUrl;
+          console.log(url);
+          const res = await axios.post(
+            "http://localhost:5000/api/submissions/add",
+            {
+              ...formData,
+              userId: user._id,
+              audioFile: url,
+            }
+          );
+          if (res?.data) navigate("/my-submissions");
+        }
       );
-      console.log(url);
-      // const res = await axios.post(
-      //   "http://localhost:5000/api/submissions/add",
-      //   {
-      //     ...formData,
-      //     userId: user._id,
-      //     audioFile: url
-      //   }
-      // );
-
-      // navigate("/my-submissions");
     } catch (error) {
       console.log(error);
     }

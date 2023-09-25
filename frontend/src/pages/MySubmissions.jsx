@@ -33,7 +33,7 @@ const MySubmissions = () => {
     //   .then((data) => setSubmissions(data))
     //   .catch((error) => console.error("Error fetching data:", error));
     fetchData();
-  }, [render]);
+  }, [render, user]);
 
   // if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
 
