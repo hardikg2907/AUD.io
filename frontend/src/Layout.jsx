@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex flex-col h-screen justify-between">
       <div className={`flex relative ${activeSong ? 'h-[85vh]' : 'h-screen'}`}>
-        <div className="p-3 pl-6 w-36 overflow-y-auto overflow-x-hidden bg-[#1E1E1E]">
+        <div className="p-3 pl-6 w-36 overflow-y-auto overflow-x-hidden bg-[#1E1E1E] scrollbar-hide">
           <Sidebar />
         </div>
         <div className="py-8 px-5 overflow-auto w-full bg-[#1E1E1E]">
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
         </div>
       </div>
       {activeSong && <div
-        className="h-[15vh] bottom-0 left-0 right-0 flex animate-slideup backdrop-blur-lg"
+        className="h-[15vh] flex animate-slideup backdrop-blur-lg"
         style={{ background: 'radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%)' }}
       >
         <MusicPlayer />
