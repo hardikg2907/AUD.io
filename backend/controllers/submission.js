@@ -152,3 +152,48 @@ exports.discover = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.requestEditAccess = async (req, res) => {
+  const { submissionId, userId } = req.params;
+  try {
+    const submission = await Submission.findByIdAndUpdate(submissionId, {
+      $push: { requests: userId },
+    });
+
+    res.json(submission);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+exports.approveEditAccess = async (req, res) => {
+  try {
+    const { submissionId, userId } = req.params;
+
+    const submission = await Submission.findById(submissionId);
+
+    if (!submission) {
+      return res.status(404).json({ message: "Submission not found" });
+    }
+
+    if (submission.userId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Permission denied" });
+    }
+
+    if (submission.requests.includes(userId)) {
+      // Grant edit access
+      submission.requests.pull(userId);
+      submission.editAccess.push(userId);
+
+      await submission.save();
+      // Perform any additional actions needed
+
+      res.status(200).json({ message: "Edit access approved successfully" });
+    } else {
+      res.status(404).json({ message: "Edit access request not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

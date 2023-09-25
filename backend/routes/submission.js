@@ -17,4 +17,9 @@ router.delete("/:submissionId/:userId", submissionController.deleteSubmission);
 
 router.get("/discover", submissionController.discover);
 
+router.put(
+  "/request/:submissionId/:userId",
+  submissionController.requestEditAccess
+);
+
 module.exports = router;

@@ -89,6 +89,16 @@ const EditMusic = () => {
     }
   };
 
+  const requestEditAccess = async () => {
+    const res = await axios.put(
+      `http://localhost:5000/api/submissions/${params?.id}/${user._id}`,
+      {
+        ...formData,
+        requests: [...formData?.requests, user?._id],
+      }
+    );
+  };
+
   // if (isLoading) return <Loader title={'Loading song details...'} />
 
   return (
@@ -110,7 +120,7 @@ const EditMusic = () => {
               </p>
               <div className="flex w-full p-5 justify-center items-center gap-5">
                 <button
-                  onClick={submit}
+                  onClick={requestEditAccess}
                   className="flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
                 >
                   Request Edit Access
