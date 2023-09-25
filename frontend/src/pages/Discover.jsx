@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AudioTile from "../components/AudioTile";
-// import Loader from "../components/Loader";
+import Loader from "../components/Loader";
 
 const Discover = () => {
   const [submissions, setSubmissions] = useState([]);
 
   const fetchData = async () => {
+    setSubmissions([])
     const res = await axios.get(
       `http://localhost:5000/api/submissions/discover`
     );
@@ -19,7 +20,7 @@ const Discover = () => {
     fetchData();
   }, []);
 
-  // if (!submissions.length) return <Loader title={'Loading Songs...'} />
+  if (!submissions.length) return <Loader title={'Loading Songs...'} />
 
   return (
     <div className="container mx-auto mt-8">
