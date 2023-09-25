@@ -13,8 +13,9 @@ import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { BiSolidCopy } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
+import { useMusicContext } from "../context/MusicContext";
 import { handleFileUpload } from "../firebaseFunctions";
-// import Loader from "../components/Loader";
 
 const EditMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -30,6 +31,7 @@ const EditMusic = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const params = useParams();
+  const { setActiveSong } = useMusicContext();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -44,6 +46,7 @@ const EditMusic = () => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, [params, user]);
@@ -52,6 +55,10 @@ const EditMusic = () => {
     console.log(audioUrl);
     setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
   }, [audioUrl]);
+
+  useEffect(() => {
+    setActiveSong(null);
+  }, []);
 
   const submit = async () => {
     try {
@@ -112,7 +119,7 @@ const EditMusic = () => {
     );
   };
 
-  // if (isLoading) return <Loader title={'Loading song details...'} />
+  if (isLoading) return <Loader title={"Loading song details..."} />;
 
   return (
     <div

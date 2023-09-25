@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import AudioTile from "../components/AudioTile";
-// import Loader from "../components/Loader";
+import Loader from "../components/Loader";
 
 // Replace this with your API URL for fetching user submissions
 
@@ -14,6 +14,7 @@ const MySubmissions = () => {
   const navigate = useNavigate();
 
   const fetchData = async () => {
+    setSubmissions([])
     const res = await axios.get(
       `http://localhost:5000/api/submissions/all/${user._id}`
     );
@@ -35,7 +36,7 @@ const MySubmissions = () => {
     fetchData();
   }, [render, user]);
 
-  // if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
+  if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
 
   return (
     <div className="container mx-auto mt-8">
