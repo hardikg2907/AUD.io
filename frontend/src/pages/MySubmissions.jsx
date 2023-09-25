@@ -1,24 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import AudioTile from "../components/AudioTile";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 
 // Replace this with your API URL for fetching user submissions
 
 const MySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
-  const [render, setRender]=useState(false);
+  const [render, setRender] = useState(false);
   const { user } = useAuthContext();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const res = await axios.get(
       `http://localhost:5000/api/submissions/all/${user._id}`
     );
     console.log(res?.data);
-    if (res) setSubmissions(res?.data);    
+    if (res) setSubmissions(res?.data);
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const MySubmissions = () => {
     fetchData();
   }, [render]);
 
-  if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
+  // if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
 
   return (
     <div className="container mx-auto mt-8">
@@ -44,7 +44,13 @@ const MySubmissions = () => {
       </h1>
       <div className="flex gap-4 flex-wrap">
         {submissions.map((submission) => (
-          <AudioTile key={submission._id} submission={submission} setRender={setRender} page="mySub" allSongs={submissions}/>
+          <AudioTile
+            key={submission._id}
+            submission={submission}
+            setRender={setRender}
+            page="mySub"
+            allSongs={submissions}
+          />
         ))}
       </div>
     </div>
