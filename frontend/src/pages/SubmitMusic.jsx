@@ -34,7 +34,7 @@ const SubmitMusic = () => {
     try {
       handleFileUpload(
         formData?.audioFile,
-        `${formData?.name}.mp3`,
+        `${formData?.name}${new Date().getTime()}.mp3`,
         "data_url"
       ).then(async (downloadUrl) => {
         let url = downloadUrl;

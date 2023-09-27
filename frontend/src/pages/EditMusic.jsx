@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useMusicContext } from "../context/MusicContext";
 import { handleFileUpload } from "../firebaseFunctions";
+import { decode, encode } from "base64-arraybuffer";
 
 const EditMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -40,21 +41,28 @@ const EditMusic = () => {
     );
     if (res?.data) {
       const response = await axios.get(res?.data?.audioFile);
-      console.log(response.data);
-      setAudioUrl(response?.data);
-      setFormData((prev) => ({ ...prev, ...res?.data }));
+      console.log(response?.data);
+      setFormData((prev) => ({
+        ...prev,
+        ...res?.data,
+        audioFile: encode(decode(response?.data)),
+      }));
+      setAudioUrl(res?.data?.audioFile);
       setIsLoading(false);
     }
   };
+
+  console.log(audioUrl);
 
   useEffect(() => {
     fetchData();
   }, [params, user]);
 
-  useEffect(() => {
-    console.log(audioUrl);
-    setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
-  }, [audioUrl]);
+  // useEffect(() => {
+  //   // console.log(audioUrl);
+  //   setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
+  //   console.log(formData);
+  // }, [audioUrl]);
 
   useEffect(() => {
     setActiveSong(null);
@@ -65,7 +73,7 @@ const EditMusic = () => {
       console.log(formData?.audioFile);
       handleFileUpload(
         formData?.audioFile,
-        `${formData?.name}.mp3`,
+        `${formData?.name}${new Date().getTime()}.mp3`,
         "data_url"
       ).then(async (downloadUrl) => {
         let url = downloadUrl;

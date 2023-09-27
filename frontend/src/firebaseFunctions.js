@@ -7,7 +7,7 @@ import {
 } from "firebase/storage";
 
 export const handleFileUpload = async (file, name, type) => {
-  const storageRef = ref(storage, `/audioFiles/${file.name}`);
+  const storageRef = ref(storage, `/audioFiles/${name}`);
   //   const uploadTask = uploadBytesResumable(storageRef, file);
   //   uploadTask.on(
   //     "state_changed",
