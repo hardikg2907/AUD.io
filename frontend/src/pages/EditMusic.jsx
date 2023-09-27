@@ -45,7 +45,7 @@ const EditMusic = () => {
       setFormData((prev) => ({
         ...prev,
         ...res?.data,
-        audioFile: encode(decode(response?.data)),
+        audioFile: res?.data?.audioFile,
       }));
       setAudioUrl(res?.data?.audioFile);
       setIsLoading(false);
@@ -104,7 +104,7 @@ const EditMusic = () => {
 
   const makeCopy = async () => {
     const res = await axios.post("http://localhost:5000/api/submissions/add", {
-      audioFile: formData?.audioFile,
+      audioFile: audioUrl,
       name: `${formData?.name}(Copy)`,
       userId: user._id,
       private: formData?.private,
