@@ -50,7 +50,6 @@ const WaveSurferPlayer = (props) => {
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
-    console.log("wavesurfer");
     if (!wavesurfer) return;
 
     setCurrentTime(0);
@@ -61,12 +60,9 @@ const WaveSurferPlayer = (props) => {
       wavesurfer.on("play", () => {}),
       wavesurfer.on("pause", () => {}),
       wavesurfer.on("timeupdate", (currentTime) => setCurrentTime(currentTime)),
-      wavesurfer.on("zoom", () => console.log("object")),
-      wavesurfer.on("hover", (e, f) => {
-        console.log(e, f);
-      }),
+      wavesurfer.on("zoom", () => {}),
+      wavesurfer.on("hover", (e, f) => {}),
       wavesurfer.on("decode", (e) => {
-        console.log(e);
         if (!region) {
           wsRegions.destroy();
           const r = wsRegions.addRegion({
@@ -122,7 +118,7 @@ const WaveSurferPlayer = (props) => {
   const trim = () => {
     let originalAudioBuffer;
     originalAudioBuffer = wavesurfer?.getDecodedData();
-    console.log(originalAudioBuffer);
+    // console.log(originalAudioBuffer);
     let end = region.end;
     let start = region.start;
     let lengthInSamples = Math.floor(
@@ -191,7 +187,7 @@ const WaveSurferPlayer = (props) => {
       .then((res) => res.blob())
       .then((blob) => {
         const file = new File([blob], "File name", { type: "audio/wav" });
-        console.log(file);
+        // console.log(file);
         const reader = new FileReader();
         reader.onloadend = () => {
           // props?.setAudioUrl(reader.result);
@@ -226,7 +222,7 @@ const WaveSurferPlayer = (props) => {
         {/* <p>Seconds played: {currentTime}</p> */}
         <button
           onClick={() => {
-            console.log(region);
+            // console.log(region);
             trim();
           }}
           className="rounded-sm bg-gray-100 text-black"

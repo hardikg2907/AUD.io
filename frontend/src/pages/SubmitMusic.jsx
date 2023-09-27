@@ -38,7 +38,7 @@ const SubmitMusic = () => {
         "data_url"
       ).then(async (downloadUrl) => {
         let url = downloadUrl;
-        console.log(url);
+        // console.log(url);
         const res = await axios.post(
           "http://localhost:5000/api/submissions/add",
           {
@@ -55,7 +55,7 @@ const SubmitMusic = () => {
   };
 
   const onUpload = (files) => {
-    console.log(files[0]);
+    // console.log(files[0]);
     if (files) {
       // Use the FileReader API to read the file and convert it to base64
       const reader = new FileReader();

@@ -41,7 +41,7 @@ const EditMusic = () => {
     );
     if (res?.data) {
       const response = await axios.get(res?.data?.audioFile);
-      console.log(response?.data);
+      // console.log(response?.data);
       setFormData((prev) => ({
         ...prev,
         ...res?.data,
@@ -52,7 +52,7 @@ const EditMusic = () => {
     }
   };
 
-  console.log(audioUrl);
+  // console.log(audioUrl);
 
   useEffect(() => {
     fetchData();
@@ -70,14 +70,12 @@ const EditMusic = () => {
 
   const submit = async () => {
     try {
-      console.log(formData?.audioFile);
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
         "data_url"
       ).then(async (downloadUrl) => {
         let url = downloadUrl;
-        console.log(url);
         const res = await axios.put(
           `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
           {
@@ -93,7 +91,7 @@ const EditMusic = () => {
   };
 
   const onUpload = (files) => {
-    console.log("upload");
+    // console.log("upload");
     if (files) {
       // Use the FileReader API to read the file and convert it to base64
       const reader = new FileReader();
