@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import SectionWrapper from '../../hoc/SectionWrapper'
 import { fadeIn, textVariant } from "../../utils/motion"
 
-const ProjectCard = ({ title,content,index }) => {
+const FeatureCard = ({ title,content,index }) => {
     return (
         <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
             <Tilt options={{ max: 45, scale: 1, speed: 450 }} className='p-5 rounded-2xl sm:w-[360px] w-full bg-[#3c1361]'>
@@ -53,7 +53,7 @@ const Features = () => {
             </motion.div>
             <div className="mt-10 flex flex-wrap gap-7 items-center justify-center">
                 {features.map((project, ind) => (
-                    <ProjectCard key={ind} {...project} index={ind} />
+                    <FeatureCard key={ind} {...project} index={ind} />
                 ))}
             </div>
         </div>

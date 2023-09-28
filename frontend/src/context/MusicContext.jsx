@@ -8,6 +8,7 @@ const MusicProvider = ({ children }) => {
     const [currentSongs, setCurrentSongs] = useState([])
     const [currentIndex, setCurrentIndex] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isNotificationClicked, setIsNotificationClicked] = useState(true)
 
     const handleSetSong = (submission, allSongs, event) => {
         event.stopPropagation()
@@ -23,11 +24,11 @@ const MusicProvider = ({ children }) => {
         console.log(index);
         setCurrentIndex(index)
         setActiveSong(allSongs[index])
-        setIsPlaying(true)        
+        setIsPlaying(true)
     }
 
     return (
-        <MusicContext.Provider value={{ isPlaying, setIsPlaying, activeSong, setActiveSong, handleSetSong, currentSongs, setCurrentSongs, currentIndex, setCurrentIndex, handleShuffle }}>
+        <MusicContext.Provider value={{ isPlaying, setIsPlaying, activeSong, setActiveSong, handleSetSong, currentSongs, setCurrentSongs, currentIndex, setCurrentIndex, handleShuffle, isNotificationClicked, setIsNotificationClicked }}>
             {children}
         </MusicContext.Provider>
     )

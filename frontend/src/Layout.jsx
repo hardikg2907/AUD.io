@@ -1,15 +1,17 @@
 import React from "react";
 import Sidebar from "./components/Sidebar";
 import { FiLogOut } from "react-icons/fi";
+import { AiOutlineBell } from "react-icons/ai";
 import { useLogout } from "./hooks/useLogout";
 import { useAuthContext } from "./context/AuthContext";
 import MusicPlayer from "./components/MusicPlayer";
 import { useMusicContext } from "./context/MusicContext";
+import NotificationPanel from "./components/NotificationPanel";
 
 const Layout = ({ children }) => {
   const { logout } = useLogout();
   const { user } = useAuthContext();
-  const { activeSong } = useMusicContext()
+  const { activeSong, isNotificationClicked, setIsNotificationClicked } = useMusicContext()
   return (
     <div className="flex flex-col h-screen justify-between">
       <div className={`flex relative ${activeSong ? 'h-[85vh]' : 'h-screen'}`}>
@@ -17,12 +19,19 @@ const Layout = ({ children }) => {
           <Sidebar />
         </div>
         <div className="py-8 px-5 overflow-auto w-full bg-[#1E1E1E]">
-          <div className="w-full flex justify-end gap-3 items-center">
-            <h2 className="text-gray-200 ">{user?.username}</h2>
-            <FiLogOut
-              className="text-red-600 cursor-pointer scale-110"
-              onClick={logout}
+          <div className="w-full flex justify-end gap-7 items-center">
+            <AiOutlineBell
+              className="text-white text-2xl cursor-pointer"
+              onClick={() => setIsNotificationClicked(true)}
+              title="Notifications"
             />
+            <div className="flex justify-center items-center gap-2">
+              <h2 className="text-gray-200 ">{user?.username}</h2>
+              <FiLogOut
+                className="text-red-600 cursor-pointer scale-110"
+                onClick={logout}
+              />
+            </div>
           </div>
           {children}
         </div>
@@ -33,6 +42,8 @@ const Layout = ({ children }) => {
       >
         <MusicPlayer />
       </div>}
+      <NotificationPanel />
+      {isNotificationClicked && <div className='absolute top-0 h-screen w-screen bg-[#1E1E1E] bg-opacity-80 z-40' onClick={() => setIsNotificationClicked(false)} />}
     </div>
   );
 };

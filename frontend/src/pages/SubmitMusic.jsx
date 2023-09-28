@@ -33,8 +33,9 @@ const SubmitMusic = () => {
   // console.log(audioUrl);
 
   const submit = async () => {
-    setIsSubmitting(true)
+    // console.log(isSubmitting);
     try {
+      setIsSubmitting(true)
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
@@ -50,13 +51,18 @@ const SubmitMusic = () => {
             audioFile: url,
           }
         );
+        // setIsSubmitting(false)
         if (res?.data) navigate("/my-submissions");
       });
     } catch (error) {
       console.log(error);
     }
-    setIsSubmitting(false)
+    // console.log(isSubmitting);
   };
+
+  // useEffect(() => {
+  //   console.log(isSubmitting);
+  // }, [isSubmitting])
 
   const onUpload = (files) => {
     // console.log(files[0]);

@@ -45,7 +45,7 @@ const MySubmissions = () => {
       <h1 className="text-3xl font-semibold mb-4 text-gray-200">
         My Submissions
       </h1>
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap animate-slideup">
         {submissions?.length ? (
           submissions.map((submission) => (
             <AudioTile
@@ -54,7 +54,9 @@ const MySubmissions = () => {
               setRender={setRender}
               page="mySub"
               allSongs={submissions}
+              setIsLoading={setIsLoading}
             />
+
           ))
         ) : (
           <>

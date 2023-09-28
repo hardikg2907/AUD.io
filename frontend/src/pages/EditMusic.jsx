@@ -69,9 +69,9 @@ const EditMusic = () => {
     setActiveSong(null);
   }, []);
 
-  const submit = async () => {
-    setIsSubmitting(true)
+  const submit = async () => {    
     try {
+      setIsSubmitting(true)
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
@@ -89,8 +89,7 @@ const EditMusic = () => {
       });
     } catch (error) {
       console.log(error);
-    }
-    setIsSubmitting(false)
+    }    
   };
 
   const onUpload = (files) => {

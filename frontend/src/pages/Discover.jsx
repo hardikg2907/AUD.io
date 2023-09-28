@@ -25,7 +25,7 @@ const Discover = () => {
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-semibold mb-4 text-gray-200">Discover</h1>
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap animate-slideup">
         {submissions.map((submission, ind) => (
           <AudioTile
             key={ind}

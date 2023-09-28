@@ -9,11 +9,6 @@ const Sidebar = () => {
 
   const sideMenu = [
     {
-      name: "Home",
-      icon: <FiHome />,
-      url: "/home",
-    },
-    {
       name: "Discover",
       icon: <FiCompass />,
       url: "/discover",
