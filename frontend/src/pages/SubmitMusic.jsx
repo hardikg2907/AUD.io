@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -23,6 +24,7 @@ const SubmitMusic = () => {
   });
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthContext();
 
@@ -32,6 +34,7 @@ const SubmitMusic = () => {
   // console.log(audioUrl);
 
   const submit = async () => {
+    setIsSubmitting(true)
     try {
       const res = await axios.post(
         "http://localhost:5000/api/submissions/add",
@@ -45,6 +48,7 @@ const SubmitMusic = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsSubmitting(false)
   };
 
   const onUpload = (files) => {
@@ -136,6 +140,9 @@ const SubmitMusic = () => {
           >
             Submit
           </button>
+          {isSubmitting && <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
+            <Loader title={'Submitting music...'} />
+          </div>}
         </div>
       )}
     </>

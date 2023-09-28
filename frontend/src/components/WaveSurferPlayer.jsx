@@ -117,7 +117,12 @@ const WaveSurferPlayer = (props) => {
   useEffect(() => {
     if (isPlaying) wavesurfer?.play();
     else wavesurfer?.pause();
-  }, [isPlaying, wavesurfer]);
+  }, [isPlaying]);
+
+  useEffect(()=>{
+    if (!wavesurfer) return;
+    wavesurfer.setOptions(props);
+  },[props,wavesurfer])
 
   const trim = () => {
     let originalAudioBuffer;
@@ -205,6 +210,7 @@ const WaveSurferPlayer = (props) => {
         // console.log(file);
       });
   };
+
   return (
     <div className="text-slate-200">
       <div

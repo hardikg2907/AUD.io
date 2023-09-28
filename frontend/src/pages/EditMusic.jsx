@@ -27,6 +27,7 @@ const EditMusic = () => {
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const params = useParams();
@@ -57,6 +58,7 @@ const EditMusic = () => {
   }, [])
 
   const submit = async () => {
+    setIsSubmitting(true)
     try {
       const res = await axios.put(
         `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
@@ -69,6 +71,7 @@ const EditMusic = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsSubmitting(false)
   };
 
   const onUpload = (files) => {
@@ -84,6 +87,7 @@ const EditMusic = () => {
   };
 
   const makeCopy = async () => {
+    setIsLoading(true)
     const res = await axios.post("http://localhost:5000/api/submissions/add", {
       audioFile: formData?.audioFile,
       name: `${formData?.name}(Copy)`,
@@ -94,6 +98,7 @@ const EditMusic = () => {
       navigate(`/my-submissions/${res?.data?._id}`);
       // window.location.reload();
     }
+    setIsLoading(false)
   };
 
   if (isLoading) return <Loader title={'Loading song details...'} />
@@ -195,32 +200,17 @@ const EditMusic = () => {
           </div>
         </div>
       </div>
-      {user._id === formData?.userId ? (
+      {user._id === formData?.userId &&
         <button
           onClick={submit}
           className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
         >
           Submit
-        </button>
-      ) : (
-        // <div className="flex flex-col w-1/5 gap-3">
-        //   <button
-        //     onClick={submit}
-        //     className="flex gap-1 items-center justify-center mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
-        //   >
-        //     Request Edit Access
-        //     <BsFillLockFill />
-        //   </button>
-        //   <button
-        //     onClick={() => makeCopy()}
-        //     className=" flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
-        //   >
-        //     Make A copy
-        //     <BiSolidCopy />
-        //   </button>
-        // </div>
-        <></>
-      )}
+        </button>}
+
+      {isSubmitting && <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
+        <Loader title={'Submitting music...'} />
+      </div>}
     </div>
   );
 };
