@@ -1,10 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { Basic } from "../components/FileUpload";
 import Header from "../components/Header";
-import WaveSurfer from "wavesurfer.js";
 import WaveSurferPlayer from "../components/WaveSurferPlayer";
 import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
-import RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 import HoverPlugin from "wavesurfer.js/dist/plugins/hover";
 import Slider from "../components/Slider";
 import DropDown from "../components/DropDown";
@@ -13,6 +11,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
+import { handleFileUpload } from "../firebaseFunctions";
 
 const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -36,15 +35,23 @@ const SubmitMusic = () => {
   const submit = async () => {
     setIsSubmitting(true)
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/submissions/add",
-        {
-          ...formData,
-          userId: user._id,
-        }
-      );
-
-      navigate("/my-submissions");
+      handleFileUpload(
+        formData?.audioFile,
+        `${formData?.name}${new Date().getTime()}.mp3`,
+        "data_url"
+      ).then(async (downloadUrl) => {
+        let url = downloadUrl;
+        // console.log(url);
+        const res = await axios.post(
+          "http://localhost:5000/api/submissions/add",
+          {
+            ...formData,
+            userId: user._id,
+            audioFile: url,
+          }
+        );
+        if (res?.data) navigate("/my-submissions");
+      });
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +59,7 @@ const SubmitMusic = () => {
   };
 
   const onUpload = (files) => {
-    console.log("upload");
+    // console.log(files[0]);
     if (files) {
       // Use the FileReader API to read the file and convert it to base64
       const reader = new FileReader();

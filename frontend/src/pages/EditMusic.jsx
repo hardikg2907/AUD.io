@@ -15,6 +15,8 @@ import { BiSolidCopy } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useMusicContext } from "../context/MusicContext";
+import { handleFileUpload } from "../firebaseFunctions";
+import { decode, encode } from "base64-arraybuffer";
 
 const EditMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -31,7 +33,7 @@ const EditMusic = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const params = useParams();
-  const { setActiveSong } = useMusicContext()
+  const { setActiveSong } = useMusicContext();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -39,35 +41,52 @@ const EditMusic = () => {
       `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`
     );
     if (res?.data) {
-      setAudioUrl(res.data?.audioFile);
-      setFormData((prev) => ({ ...prev, ...res?.data }));
+      const response = await axios.get(res?.data?.audioFile);
+      // console.log(response?.data);
+      setFormData((prev) => ({
+        ...prev,
+        ...res?.data,
+        audioFile: res?.data?.audioFile,
+      }));
+      setAudioUrl(res?.data?.audioFile);
       setIsLoading(false);
     }
   };
+
+  // console.log(audioUrl);
 
   useEffect(() => {
     fetchData();
   }, [params, user]);
 
-  useEffect(() => {
-    setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
-  }, [audioUrl]);
+  // useEffect(() => {
+  //   // console.log(audioUrl);
+  //   setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
+  //   console.log(formData);
+  // }, [audioUrl]);
 
   useEffect(() => {
-    setActiveSong(null)
-  }, [])
+    setActiveSong(null);
+  }, []);
 
   const submit = async () => {
     setIsSubmitting(true)
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
-        {
-          ...formData,
-        }
-      );
-
-      navigate("/my-submissions");
+      handleFileUpload(
+        formData?.audioFile,
+        `${formData?.name}${new Date().getTime()}.mp3`,
+        "data_url"
+      ).then(async (downloadUrl) => {
+        let url = downloadUrl;
+        const res = await axios.put(
+          `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
+          {
+            ...formData,
+            audioFile: url,
+          }
+        );
+        if (res?.data) navigate("/my-submissions");
+      });
     } catch (error) {
       console.log(error);
     }
@@ -75,7 +94,7 @@ const EditMusic = () => {
   };
 
   const onUpload = (files) => {
-    console.log("upload");
+    // console.log("upload");
     if (files) {
       // Use the FileReader API to read the file and convert it to base64
       const reader = new FileReader();
@@ -89,7 +108,7 @@ const EditMusic = () => {
   const makeCopy = async () => {
     setIsLoading(true)
     const res = await axios.post("http://localhost:5000/api/submissions/add", {
-      audioFile: formData?.audioFile,
+      audioFile: audioUrl,
       name: `${formData?.name}(Copy)`,
       userId: user._id,
       private: formData?.private,
@@ -101,12 +120,23 @@ const EditMusic = () => {
     setIsLoading(false)
   };
 
-  if (isLoading) return <Loader title={'Loading song details...'} />
+  const requestEditAccess = async () => {
+    const res = await axios.put(
+      `http://localhost:5000/api/submissions/${params?.id}/${user._id}`,
+      {
+        ...formData,
+        requests: [...formData?.requests, user?._id],
+      }
+    );
+  };
+
+  if (isLoading) return <Loader title={"Loading song details..."} />;
 
   return (
     <div
-      className={`w-full ${user?._id !== formData?.userId ? "h-[90hv]" : "h-full"
-        }`}
+      className={`w-full ${
+        user?._id !== formData?.userId ? "h-[90hv]" : "h-full"
+      }`}
     >
       <div className="w-full relative">
         {user?._id !== formData?.userId && (
@@ -121,7 +151,7 @@ const EditMusic = () => {
               </p>
               <div className="flex w-full p-5 justify-center items-center gap-5">
                 <button
-                  onClick={submit}
+                  onClick={requestEditAccess}
                   className="flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
                 >
                   Request Edit Access
