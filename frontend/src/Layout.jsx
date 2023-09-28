@@ -53,12 +53,13 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </div>
-      {activeSong && <div
-        className="h-[15vh] flex animate-slideup backdrop-blur-lg"
-        style={{ background: 'radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%)' }}
-      >
-        <MusicPlayer />
-      </div>}
+      {activeSong &&
+        <div
+          className="h-[15vh] flex animate-slideup backdrop-blur-lg"
+          style={{ background: 'radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%)' }}
+        >
+          <MusicPlayer />
+        </div>}
       <NotificationPanel />
       {isNotificationClicked && <div className='absolute top-0 h-screen w-screen bg-[#1E1E1E] bg-opacity-70 z-40' onClick={() => setIsNotificationClicked(false)} />}
     </div>
