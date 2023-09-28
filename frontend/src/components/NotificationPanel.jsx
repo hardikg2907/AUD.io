@@ -60,37 +60,37 @@ const NotificationPanel = () => {
         {
             id: 1,
             type: 'like',
-            message: 'XYZ liked your song',
+            message: 'Parth liked your song Test-1',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
         {
             id: 2,
             type: 'like',
-            message: 'XYZ liked your song',
+            message: 'Deepak liked your song Test-2',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
         {
             id: 3,
             type: 'req',
-            message: 'XYZ wants access to edit ABC song',
+            message: 'Hardik wants access to edit Test-3',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
         {
             id: 4,
             type: 'req',
-            message: 'XYZ wants access to edit ABC song',
+            message: 'Parth wants access to edit Test-4',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
         {
             id: 5,
             type: 'like',
-            message: 'XYZ liked your song',
+            message: 'Deepak liked your song Test-5',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
         {
             id: 6,
             type: 'req',
-            message: 'XYZ wants access to edit ABC song',
+            message: 'Hardik wants access to edit Test-6',
             icon: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         },
     ]

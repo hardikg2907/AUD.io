@@ -77,7 +77,7 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
         </a>
         {page === "mySub" && (
           <button
-            className="bg-red-600 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
+            className="bg-[#f03a47] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation();
               deleteMusic();

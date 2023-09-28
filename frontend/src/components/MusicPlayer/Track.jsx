@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuthContext } from '../../context/AuthContext';
+import { AiOutlineHeart } from 'react-icons/ai'
 
 const Track = ({ isPlaying, isActive, activeSong }) => {
   const { user } = useAuthContext()
@@ -17,6 +18,7 @@ const Track = ({ isPlaying, isActive, activeSong }) => {
           {activeSong?.userId?.username ? activeSong?.userId?.username : user?.username ? user?.username : 'No active Song'}
         </p>
       </div>
+      <AiOutlineHeart className='text-white text-3xl cursor-pointer' />
     </div>
   )
 }

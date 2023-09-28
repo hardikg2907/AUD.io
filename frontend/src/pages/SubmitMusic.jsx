@@ -12,6 +12,7 @@ import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { handleFileUpload } from "../firebaseFunctions";
+import { useMusicContext } from "../context/MusicContext";
 
 const SubmitMusic = () => {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -26,6 +27,7 @@ const SubmitMusic = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthContext();
+  const { setActiveSong } = useMusicContext()
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
@@ -74,7 +76,13 @@ const SubmitMusic = () => {
       };
       reader.readAsDataURL(files[0]);
     }
-  };
+  }
+
+  useEffect(() => {
+    if (audioUrl)
+      setActiveSong(null);
+  }, [audioUrl])
+
   return (
     <>
       {!audioUrl ? (
