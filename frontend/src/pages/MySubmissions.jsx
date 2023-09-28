@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AudioTile from "../components/AudioTile";
 import Loader from "../components/Loader";
 
@@ -9,17 +9,19 @@ import Loader from "../components/Loader";
 
 const MySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [render, setRender] = useState(false);
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    setSubmissions([])
+    setIsLoading(true);
     const res = await axios.get(
       `http://localhost:5000/api/submissions/all/${user._id}`
     );
-    console.log(res?.data);
+    // console.log(res?.data);
     if (res) setSubmissions(res?.data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const MySubmissions = () => {
     fetchData();
   }, [render, user]);
 
-  if (!submissions.length) return <Loader title={'Loading Your Songs...'} />
+  if (isLoading) return <Loader title={"Loading Your Songs..."} />;
 
   return (
     <div className="container mx-auto mt-8">
@@ -44,15 +46,27 @@ const MySubmissions = () => {
         My Submissions
       </h1>
       <div className="flex gap-4 flex-wrap">
-        {submissions.map((submission) => (
-          <AudioTile
-            key={submission._id}
-            submission={submission}
-            setRender={setRender}
-            page="mySub"
-            allSongs={submissions}
-          />
-        ))}
+        {submissions?.length ? (
+          submissions.map((submission) => (
+            <AudioTile
+              key={submission._id}
+              submission={submission}
+              setRender={setRender}
+              page="mySub"
+              allSongs={submissions}
+            />
+          ))
+        ) : (
+          <>
+            {/* <p>No Submissions</p> */}
+            <p className="text-red-600 text-sm">
+              Make your first submission{" "}
+              <Link className="text-blue-400 hover:underline" to={"/submit"}>
+                here
+              </Link>
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
