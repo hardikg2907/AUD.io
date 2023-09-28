@@ -5,20 +5,21 @@ import Loader from "../components/Loader";
 
 const Discover = () => {
   const [submissions, setSubmissions] = useState([]);
+  const [render, setRender] = useState(false);
 
   const fetchData = async () => {
     setSubmissions([])
     const res = await axios.get(
       `http://localhost:5000/api/submissions/discover`
     );
-    console.log(res?.data);
+    // console.log(res?.data);
     if (res) setSubmissions(res?.data);
   };
 
   useEffect(() => {
-    console.log(submissions.length);
+    // console.log(submissions.length);
     fetchData();
-  }, []);
+  }, [render]);
 
   if (!submissions.length) return <Loader title={'Loading Songs...'} />
 
@@ -32,6 +33,7 @@ const Discover = () => {
             submission={submission}
             page="discover"
             allSongs={submissions}
+            setRender={setRender}
           />
         ))}
       </div>
