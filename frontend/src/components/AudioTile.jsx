@@ -74,7 +74,7 @@ const AudioTile = ({ submission, page, setRender, allSongs }) => {
             <AiOutlineCloudDownload />
           </button>
         </a>
-        {page === "mySub" && (
+        {(page === "mySub" || submission.userId._id===user._id) && (
           <button
             className="bg-red-600 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
