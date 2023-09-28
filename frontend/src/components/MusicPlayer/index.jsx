@@ -49,6 +49,11 @@ const MusicPlayer = () => {
     }
   };
 
+  useEffect(() => {
+    if (activeSong)
+      setIsPlaying(true)
+  }, [activeSong])
+
   return (
     <div className="relative sm:px-12 px-5 w-full flex items-center justify-between scale-90">
       <Track isPlaying={isPlaying} isActive={isActive} activeSong={activeSong} />
