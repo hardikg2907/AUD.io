@@ -4,6 +4,7 @@ import {
   uploadBytes,
   getDownloadURL,
   uploadString,
+  deleteObject,
 } from "firebase/storage";
 
 export const handleFileUpload = async (file, name, type) => {
@@ -39,5 +40,27 @@ export const handleFileUpload = async (file, name, type) => {
         resolve(downloadUrl);
       });
     });
+  });
+};
+
+export const handleFileDelete = async (url) => {
+  const decodedPath = decodeURIComponent(url);
+
+  // Parse the decoded URL to extract the storage path
+  const pathStart = decodedPath.indexOf("/o/") + 3;
+  const pathEnd = decodedPath.indexOf("?alt=media");
+  const storagePath = decodedPath.substring(pathStart, pathEnd);
+
+  // Create a reference to the file
+  const fileRef = ref(storage, storagePath);
+
+  return new Promise((resolve, reject) => {
+    deleteObject(fileRef)
+      .then(() => {
+        resolve(url);
+      })
+      .catch((error) => {
+        reject("Error deleting file:", error);
+      });
   });
 };
