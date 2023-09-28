@@ -103,6 +103,7 @@ const NotificationPanel = () => {
     }
 
     useEffect(() => {
+        setSearchTerm('')
         if (activeTab === 'Likes') {
             const notifs = notifications.filter((item) => item?.type === 'like')
             setNotificationItems(notifs)
