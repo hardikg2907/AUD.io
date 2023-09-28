@@ -89,7 +89,6 @@ const Login = () => {
             Sign in
           </button>
         </div>
-      </form>
       <p className="text-xs text-[#7b7b7b]">
         Not a member?{" "}
         <Link
@@ -100,6 +99,7 @@ const Login = () => {
         </Link>{" "}
         now
       </p>
+      </form>
     </div>
   );
 };

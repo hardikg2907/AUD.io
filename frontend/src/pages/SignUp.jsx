@@ -103,7 +103,6 @@ const SignUp = () => {
             </a>{" "}
           </p>
         </div>
-      </form>
       <p className="text-xs text-[#7b7b7b]">
         Already a member?{" "}
         <Link
@@ -113,6 +112,7 @@ const SignUp = () => {
           Sign in
         </Link>
       </p>
+      </form>
     </div>
   );
 };
