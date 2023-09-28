@@ -34,8 +34,7 @@ const SubmitMusic = () => {
   }, [audioUrl]);
   // console.log(audioUrl);
 
-  const submit = async () => {
-    // console.log(isSubmitting);
+  const submit = async () => {    
     try {
       setIsSubmitting(true)
       handleFileUpload(
@@ -58,13 +57,8 @@ const SubmitMusic = () => {
       });
     } catch (error) {
       console.log(error);
-    }
-    // console.log(isSubmitting);
+    }    
   };
-
-  // useEffect(() => {
-  //   console.log(isSubmitting);
-  // }, [isSubmitting])
 
   const onUpload = (files) => {
     // console.log(files[0]);
