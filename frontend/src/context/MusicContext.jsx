@@ -8,7 +8,7 @@ const MusicProvider = ({ children }) => {
     const [currentSongs, setCurrentSongs] = useState([])
     const [currentIndex, setCurrentIndex] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
-    const [isNotificationClicked, setIsNotificationClicked] = useState(true)
+    const [isNotificationClicked, setIsNotificationClicked] = useState(false)
 
     const handleSetSong = (submission, allSongs, event) => {
         event.stopPropagation()
