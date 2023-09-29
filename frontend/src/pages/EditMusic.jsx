@@ -27,6 +27,7 @@ const EditMusic = () => {
     userId: "",
   });
   const [zoomLevel, setZoomLevel] = useState(0);
+  const [accessable, setAccessable] = useState(false);
   const [audioRate, setAudioRate] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,6 +49,11 @@ const EditMusic = () => {
         ...res?.data,
         audioFile: res?.data?.audioFile,
       }));
+      if (
+        user?._id === res?.data?.userId ||
+        res?.data?.editAccess?.includes(user?._id)
+      )
+        setAccessable(true);
       setAudioUrl(res?.data?.audioFile);
       setIsLoading(false);
     }
@@ -132,13 +138,9 @@ const EditMusic = () => {
   if (isLoading) return <Loader title={"Loading song details..."} />;
 
   return (
-    <div
-      className={`w-full ${
-        user?._id !== formData?.userId ? "h-[90hv]" : "h-full"
-      }`}
-    >
+    <div className={`w-full ${!accessable ? "h-[90hv]" : "h-full"}`}>
       <div className="w-full relative">
-        {user?._id !== formData?.userId && (
+        {!accessable && (
           <div
             className={
               "w-full h-[75vh] bg-[#1E1E1E] bg-opacity-[0.85] z-[5] absolute overflow-hidden"
@@ -233,7 +235,7 @@ const EditMusic = () => {
           </div>
         </div>
       </div>
-      {user._id === formData?.userId && (
+      {accessable && (
         <button
           onClick={submit}
           className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"

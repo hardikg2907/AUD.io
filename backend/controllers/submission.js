@@ -101,7 +101,7 @@ exports.updateSubmission = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    if (!submission || submission.userId.toString() !== user._id.toString()) {
+    if (!submission) {
       return res.status(404).json({ msg: "Submission not found" });
     }
 
@@ -188,7 +188,7 @@ exports.giveEditAccess = async (req, res) => {
 
     if (submission.requests.includes(userId)) {
       // Grant edit access
-      if (status === "approved") submission.editAccess.push(userId);
+      if (status === "accepted") submission.editAccess.push(userId);
       // Remove the request after approval
       submission.requests = submission.requests.filter(
         (requestingUserId) => requestingUserId.toString() !== userId
@@ -196,7 +196,7 @@ exports.giveEditAccess = async (req, res) => {
 
       await submission.save();
 
-      res.status(200).json({ message: "Edit access approved successfully" });
+      res.status(200).json({ message: `Edit access ${status} successfully` });
     } else {
       res.status(404).json({ message: "Edit access request not found" });
     }

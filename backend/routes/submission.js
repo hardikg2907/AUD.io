@@ -19,7 +19,7 @@ router.get("/discover", submissionController.discover);
 
 router.post("/request/:submissionId", submissionController.requestEditAccess);
 
-router.put(
+router.patch(
   "/access/:submissionId/:userId",
   submissionController.giveEditAccess
 );
