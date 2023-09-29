@@ -41,7 +41,7 @@ const EditMusic = () => {
       `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`
     );
     if (res?.data) {
-      const response = await axios.get(res?.data?.audioFile);
+      // const response = await axios.get(res?.data?.audioFile);
       // console.log(response?.data);
       setFormData((prev) => ({
         ...prev,
@@ -69,9 +69,9 @@ const EditMusic = () => {
     setActiveSong(null);
   }, []);
 
-  const submit = async () => {    
+  const submit = async () => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
@@ -89,7 +89,7 @@ const EditMusic = () => {
       });
     } catch (error) {
       console.log(error);
-    }    
+    }
   };
 
   const onUpload = (files) => {
@@ -105,7 +105,7 @@ const EditMusic = () => {
   };
 
   const makeCopy = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const res = await axios.post("http://localhost:5000/api/submissions/add", {
       audioFile: audioUrl,
       name: `${formData?.name}(Copy)`,
@@ -116,17 +116,17 @@ const EditMusic = () => {
       navigate(`/my-submissions/${res?.data?._id}`);
       // window.location.reload();
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const requestEditAccess = async () => {
-    const res = await axios.put(
-      `http://localhost:5000/api/submissions/${params?.id}/${user._id}`,
+    const res = await axios.post(
+      `http://localhost:5000/api/submissions/request/${params?.id}`,
       {
-        ...formData,
-        requests: [...formData?.requests, user?._id],
+        userId: user?._id,
       }
     );
+    console.log(res?.data);
   };
 
   if (isLoading) return <Loader title={"Loading song details..."} />;
@@ -151,9 +151,13 @@ const EditMusic = () => {
               <div className="flex w-full p-5 justify-center items-center gap-5">
                 <button
                   onClick={requestEditAccess}
-                  className="flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
+                  disabled={formData?.requests?.includes(user?._id)}
+                  className="flex gap-1 items-center justify-center bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600
+                  disabled:opacity-40 disabled:hover:bg-transparent"
                 >
-                  Request Edit Access
+                  {formData?.requests?.includes(user?._id)
+                    ? "Edit Access Requested..."
+                    : "Request Edit Access"}
                   <BsFillLockFill />
                 </button>
                 <button
@@ -229,17 +233,20 @@ const EditMusic = () => {
           </div>
         </div>
       </div>
-      {user._id === formData?.userId &&
+      {user._id === formData?.userId && (
         <button
           onClick={submit}
           className="mt-10 bg-transparent text-red-600 px-2 py-1 rounded-md hover:bg-[#383838] duration-200 border border-red-600"
         >
           Submit
-        </button>}
+        </button>
+      )}
 
-      {isSubmitting && <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
-        <Loader title={'Submitting music...'} />
-      </div>}
+      {isSubmitting && (
+        <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
+          <Loader title={"Submitting music..."} />
+        </div>
+      )}
     </div>
   );
 };

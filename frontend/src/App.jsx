@@ -22,16 +22,16 @@ const App = () => {
         <>
           <Route
             path="/signup"
-            element={!user ? <SignUp /> : <Navigate to={"/home"} replace />}
+            element={!user ? <SignUp /> : <Navigate to={"/discover"} replace />}
           />
           <Route
             path="/login"
-            element={!user ? <Login /> : <Navigate to={"/home"} replace />}
+            element={!user ? <Login /> : <Navigate to={"/discover"} replace />}
           />
           <Route
             path="/"
             element={
-              !user ? <LandingPage /> : <Navigate to={"/home"} replace />
+              !user ? <LandingPage /> : <Navigate to={"/discover"} replace />
             }
           />
         </>

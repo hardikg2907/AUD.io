@@ -5,6 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const authRoutes = require("./routes/auth");
 const submissionRoutes = require("./routes/submission");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/user", userRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
