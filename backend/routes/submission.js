@@ -17,9 +17,11 @@ router.delete("/:submissionId/:userId", submissionController.deleteSubmission);
 
 router.get("/discover", submissionController.discover);
 
-router.put(
-  "/request/:submissionId/:userId",
-  submissionController.requestEditAccess
+router.post("/request/:submissionId", submissionController.requestEditAccess);
+
+router.patch(
+  "/access/:submissionId/:userId",
+  submissionController.giveEditAccess
 );
 
 module.exports = router;

@@ -101,7 +101,7 @@ exports.updateSubmission = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    if (!submission || submission.userId.toString() !== user._id.toString()) {
+    if (!submission) {
       return res.status(404).json({ msg: "Submission not found" });
     }
 
@@ -154,11 +154,16 @@ exports.discover = async (req, res) => {
 };
 
 exports.requestEditAccess = async (req, res) => {
-  const { submissionId, userId } = req.params;
+  const { submissionId } = req.params;
+  const { userId } = req.body;
   try {
-    const submission = await Submission.findByIdAndUpdate(submissionId, {
-      $push: { requests: userId },
-    });
+    const submission = await Submission.findByIdAndUpdate(
+      submissionId,
+      {
+        $push: { requests: userId },
+      },
+      { new: true }
+    );
 
     res.json(submission);
   } catch (error) {
@@ -166,9 +171,10 @@ exports.requestEditAccess = async (req, res) => {
   }
 };
 
-exports.approveEditAccess = async (req, res) => {
+exports.giveEditAccess = async (req, res) => {
   try {
     const { submissionId, userId } = req.params;
+    const { status } = req.body;
 
     const submission = await Submission.findById(submissionId);
 
@@ -176,19 +182,21 @@ exports.approveEditAccess = async (req, res) => {
       return res.status(404).json({ message: "Submission not found" });
     }
 
-    if (submission.userId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Permission denied" });
-    }
+    // if (submission.userId.toString() !== req.user.id) {
+    //   return res.status(403).json({ message: 'Permission denied' });
+    // }
 
     if (submission.requests.includes(userId)) {
       // Grant edit access
-      submission.requests.pull(userId);
-      submission.editAccess.push(userId);
+      if (status === "accepted") submission.editAccess.push(userId);
+      // Remove the request after approval
+      submission.requests = submission.requests.filter(
+        (requestingUserId) => requestingUserId.toString() !== userId
+      );
 
       await submission.save();
-      // Perform any additional actions needed
 
-      res.status(200).json({ message: "Edit access approved successfully" });
+      res.status(200).json({ message: `Edit access ${status} successfully` });
     } else {
       res.status(404).json({ message: "Edit access request not found" });
     }
