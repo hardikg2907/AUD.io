@@ -30,18 +30,20 @@ const Layout = ({ children }) => {
   useEffect(() => { setActiveSong(null) }, [])
 
   return (
-    <div className="flex flex-col h-screen justify-between">
-      <div className={`flex relative ${activeSong ? 'h-[85vh]' : 'h-screen'}`}>
-        <div className="p-3 pl-6 w-36 overflow-y-auto overflow-x-hidden bg-[#1E1E1E] scrollbar-hide">
+    <div className="flex flex-col h-screen justify-between custom-scrollbar overflow-hidden">
+      <div className={`flex relative ${activeSong ? 'h-[85vh]' : 'h-screen'} overflow-hidden`}>
+        <div className="p-3 pl-6 w-36 overflow-y-auto custom-scrollbar overflow-x-hidden bg-[#1E1E1E] scrollbar-hide">
           <Sidebar />
         </div>
-        <div className="py-8 px-5 overflow-auto w-full bg-[#1E1E1E]">
+        <div className="py-8 px-5 overflow-auto custom-scrollbar w-full bg-[#1E1E1E]">
           <div className="w-full flex justify-end gap-7 items-center">
-            <AiOutlineBell
-              className="text-white text-2xl cursor-pointer"
+            <div
+              className="text-white text-2xl cursor-pointer rounded-full hover:bg-[#111111] p-3 transition-all duration-200 ease-in-out"
               onClick={() => setIsNotificationClicked(true)}
               title="Notifications"
-            />
+            >
+              <AiOutlineBell />
+            </div>
             <div className="flex justify-center items-center gap-2">
               <h2 className="text-gray-200 ">{user?.username}</h2>
               <FiLogOut

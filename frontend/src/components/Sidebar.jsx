@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FiHome, FiFolder, FiMusic, FiUser, FiCompass } from "react-icons/fi";
+import { FiFolder, FiMusic, FiUser, FiCompass } from "react-icons/fi";
+import { AiOutlineHeart } from "react-icons/ai"
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +23,11 @@ const Sidebar = () => {
       name: "Submissions",
       icon: <FiFolder />,
       url: "/my-submissions",
+    },
+    {
+      name: "Favourites",
+      icon: <AiOutlineHeart/>,
+      // url: "/my-submissions",
     },
     {
       name: "Account",
