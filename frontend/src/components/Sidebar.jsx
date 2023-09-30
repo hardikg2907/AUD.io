@@ -26,6 +26,7 @@ const Sidebar = () => {
     {
       name: "Account",
       icon: <FiUser />,
+      url:'/account',
     },
   ];
 

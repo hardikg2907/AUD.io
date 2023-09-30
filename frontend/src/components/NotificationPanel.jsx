@@ -129,7 +129,7 @@ const NotificationPanel = () => {
 
     return (
         // isNotificationClicked && (<div className='absolute top-0 h-screen w-screen bg-[#1E1E1E] bg-opacity-80 z-40'>
-        <div className={`bg-[#151515] h-screen ${isNotificationClicked ? 'w-1/3 p-3' : 'w-0'} transition-[width] duration-300 ease-in-out overflow-hidden scrollbar-hide absolute right-0 flex z-50 text-white`}>
+        <div className={`bg-[#151515] h-screen ${isNotificationClicked ? 'w-1/3 p-3' : 'w-0'} transition-[width] duration-300 ease-in-out overflow-hidden scrollbar-hide absolute right-0 flex z-50 text-white rounded-s-lg`}>
             {isNotificationClicked &&
                 <div className={`flex flex-col gap-4 h-full w-full`}>
                     <div className='flex justify-between items-center w-full h-10'>
