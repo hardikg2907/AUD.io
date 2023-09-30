@@ -27,16 +27,16 @@ const SubmitMusic = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthContext();
-  const { setActiveSong } = useMusicContext()
+  const { setActiveSong } = useMusicContext();
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, audioFile: audioUrl }));
   }, [audioUrl]);
   // console.log(audioUrl);
 
-  const submit = async () => {    
+  const submit = async () => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
@@ -44,20 +44,17 @@ const SubmitMusic = () => {
       ).then(async (downloadUrl) => {
         let url = downloadUrl;
         // console.log(url);
-        const res = await axios.post(
-          "http://localhost:5000/api/submissions/add",
-          {
-            ...formData,
-            userId: user._id,
-            audioFile: url,
-          }
-        );
+        const res = await axios.post("submissions/add", {
+          ...formData,
+          userId: user._id,
+          audioFile: url,
+        });
         // setIsSubmitting(false)
         if (res?.data) navigate("/my-submissions");
       });
     } catch (error) {
       console.log(error);
-    }    
+    }
   };
 
   const onUpload = (files) => {
@@ -70,12 +67,11 @@ const SubmitMusic = () => {
       };
       reader.readAsDataURL(files[0]);
     }
-  }
+  };
 
   useEffect(() => {
-    if (audioUrl)
-      setActiveSong(null);
-  }, [audioUrl])
+    if (audioUrl) setActiveSong(null);
+  }, [audioUrl]);
 
   return (
     <>
@@ -155,9 +151,11 @@ const SubmitMusic = () => {
           >
             Submit
           </button>
-          {isSubmitting && <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
-            <Loader title={'Submitting music...'} />
-          </div>}
+          {isSubmitting && (
+            <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center bg-[#1E1E1E] bg-opacity-80 z-50">
+              <Loader title={"Submitting music..."} />
+            </div>
+          )}
         </div>
       )}
     </>

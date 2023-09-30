@@ -15,7 +15,7 @@ const LikesNotifications = ({ item }) => (
 const RequestsNotifications = ({ item, accessAllowed, setAccessAllowed }) => {
   const giveEditAccess = async (status) => {
     const res = await axios.patch(
-      `http://localhost:5000/api/submissions/access/${item?.submissionId}/${item?.userId}`,
+      `submissions/access/${item?.submissionId}/${item?.userId}`,
       {
         status,
       }
@@ -113,9 +113,7 @@ const NotificationPanel = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(
-        `http://localhost:5000/api/user/requests/${user?._id}`
-      );
+      const res = await axios.get(`user/requests/${user?._id}`);
       console.log(res?.data);
       if (res?.data) {
         setNotificationItems((prev) => [

@@ -38,9 +38,7 @@ const EditMusic = () => {
 
   const fetchData = async () => {
     setIsLoading(true);
-    const res = await axios.get(
-      `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`
-    );
+    const res = await axios.get(`submissions/${params?.id}/${user?._id}`);
     if (res?.data) {
       // const response = await axios.get(res?.data?.audioFile);
       // console.log(response?.data);
@@ -84,13 +82,10 @@ const EditMusic = () => {
         "data_url"
       ).then(async (downloadUrl) => {
         let url = downloadUrl;
-        const res = await axios.put(
-          `http://localhost:5000/api/submissions/${params?.id}/${user?._id}`,
-          {
-            ...formData,
-            audioFile: url,
-          }
-        );
+        const res = await axios.put(`submissions/${params?.id}/${user?._id}`, {
+          ...formData,
+          audioFile: url,
+        });
         if (res?.data) navigate("/my-submissions");
       });
     } catch (error) {
@@ -112,7 +107,7 @@ const EditMusic = () => {
 
   const makeCopy = async () => {
     setIsLoading(true);
-    const res = await axios.post("http://localhost:5000/api/submissions/add", {
+    const res = await axios.post("submissions/add", {
       audioFile: audioUrl,
       name: `${formData?.name}(Copy)`,
       userId: user._id,
@@ -126,12 +121,9 @@ const EditMusic = () => {
   };
 
   const requestEditAccess = async () => {
-    const res = await axios.post(
-      `http://localhost:5000/api/submissions/request/${params?.id}`,
-      {
-        userId: user?._id,
-      }
-    );
+    const res = await axios.post(`submissions/request/${params?.id}`, {
+      userId: user?._id,
+    });
     console.log(res?.data);
   };
 

@@ -8,10 +8,8 @@ const Discover = () => {
   const [render, setRender] = useState(false);
 
   const fetchData = async () => {
-    setSubmissions([])
-    const res = await axios.get(
-      `http://localhost:5000/api/submissions/discover`
-    );
+    setSubmissions([]);
+    const res = await axios.get(`submissions/discover`);
     // console.log(res?.data);
     if (res) setSubmissions(res?.data);
   };
@@ -21,7 +19,7 @@ const Discover = () => {
     fetchData();
   }, [render]);
 
-  if (!submissions.length) return <Loader title={'Loading Songs...'} />
+  if (!submissions.length) return <Loader title={"Loading Songs..."} />;
 
   return (
     <div className="container mx-auto mt-8">

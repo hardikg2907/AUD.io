@@ -13,7 +13,7 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await axios.post("http://localhost:5000/api/auth/login", {
+    const response = await axios.post("auth/login", {
       email,
       password,
     });
@@ -55,14 +55,11 @@ export const useRegister = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/register",
-      {
-        email,
-        password,
-        username,
-      }
-    );
+    const response = await axios.post("auth/register", {
+      email,
+      password,
+      username,
+    });
     const json = await response.data;
     console.log(json);
     // setError(json.error);

@@ -16,9 +16,7 @@ const MySubmissions = () => {
 
   const fetchData = async () => {
     setIsLoading(true);
-    const res = await axios.get(
-      `http://localhost:5000/api/submissions/all/${user._id}`
-    );
+    const res = await axios.get(`submissions/all/${user._id}`);
     // console.log(res?.data);
     if (res) setSubmissions(res?.data);
     setIsLoading(false);
@@ -56,7 +54,6 @@ const MySubmissions = () => {
               allSongs={submissions}
               setIsLoading={setIsLoading}
             />
-
           ))
         ) : (
           <>
