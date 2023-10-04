@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { useRegister } from "../hooks/useLogin";
 import StarsCanvas from "../components/Stars";
+import { signIn } from "../authFirebase";
 
 const inputStyling =
   "w-full bg-[#383838] rounded-lg h-10 p-2 focus:outline-none";
@@ -84,6 +85,7 @@ const SignUp = () => {
           <button
             type="button"
             className="duration-300 bg-[#252525] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
+            onClick={signIn}
           >
             <FcGoogle className="scale-150" />
           </button>
@@ -103,15 +105,15 @@ const SignUp = () => {
             </a>{" "}
           </p>
         </div>
-      <p className="text-xs text-[#7b7b7b]">
-        Already a member?{" "}
-        <Link
-          className="text-white font-semibold hover:underline"
-          to={"/login"}
-        >
-          Sign in
-        </Link>
-      </p>
+        <p className="text-xs text-[#7b7b7b]">
+          Already a member?{" "}
+          <Link
+            className="text-white font-semibold hover:underline"
+            to={"/login"}
+          >
+            Sign in
+          </Link>
+        </p>
       </form>
     </div>
   );

@@ -19,8 +19,8 @@ exports.createSubmission = async (req, res) => {
     // Find the authenticated user by their ID
     let user = await User.find({ _id: req.body.userId });
     user = user[0];
-    console.log(user);
-    console.log(req.body);
+    // console.log(user);
+    // console.log(req.body);
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });

@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   submissions: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Submission" }],
   requests: [],
+  pfp: { type: String },
 });
 
 //static signup method

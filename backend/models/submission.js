@@ -22,6 +22,9 @@ const submissionSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  thumbnail: {
+    type: String,
+  },
   // Add more fields as needed
 });
 
