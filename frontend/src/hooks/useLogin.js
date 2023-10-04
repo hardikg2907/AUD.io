@@ -51,7 +51,7 @@ export const useRegister = () => {
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
-  const register = async ({ email, password, username }) => {
+  const register = async ({ email, password, username, name, pfp }) => {
     setIsLoading(true);
     setError(null);
 
@@ -59,6 +59,8 @@ export const useRegister = () => {
       email,
       password,
       username,
+      name,
+      pfp,
     });
     const json = await response.data;
     console.log(json);

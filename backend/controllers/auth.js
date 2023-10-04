@@ -16,8 +16,7 @@ const register = async (req, res) => {
     let hash = await bcrypt.hash(password, salt);
 
     user = await User.create({
-      username,
-      email,
+      ...req.body,
       password: hash,
     });
     const payload = {
@@ -28,7 +27,13 @@ const register = async (req, res) => {
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token, _id: user._id, username: user.username });
+      res.json({
+        token,
+        _id: user._id,
+        username: user.username,
+        pfp: user.pfp,
+        email,
+      });
     });
   } catch (err) {
     console.error(err.message);
@@ -59,7 +64,13 @@ const login = async (req, res) => {
 
     jwt.sign(payload, "yoursecretkey", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token, _id: user._id, username: user.username, email });
+      res.json({
+        token,
+        _id: user._id,
+        username: user.username,
+        pfp: user.pfp,
+        email,
+      });
     });
   } catch (err) {
     console.error(err.message);

@@ -57,3 +57,26 @@ export function Basic({ onUpload }) {
     </div>
   );
 }
+export function BasicImage({ onUpload }) {
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
+    useDropzone({ accept: { "image/*": [] }, onDrop: onUpload });
+
+  const style = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isFocused ? focusedStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isFocused, isDragAccept, isDragReject]
+  );
+
+  return (
+    <div className="container w-16 animate-slideleft">
+      <div {...getRootProps({ style })} className="!h-16 rounded-sm">
+        <input {...getInputProps()} onChange={onUpload} />
+        <FiUploadCloud className="scale-[1.5] text-red-500 font-light" />
+      </div>
+    </div>
+  );
+}

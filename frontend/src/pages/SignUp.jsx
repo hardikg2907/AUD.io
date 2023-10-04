@@ -16,6 +16,8 @@ const SignUp = () => {
     username: "",
     email: "",
     password: "",
+    name: "",
+    pfp: "",
   });
   const [checked, setChecked] = useState(false);
   return (
@@ -85,7 +87,10 @@ const SignUp = () => {
           <button
             type="button"
             className="duration-300 bg-[#252525] rounded-lg px-3 py-1 w-1/4 h-10 flex justify-center items-center"
-            onClick={signIn}
+            onClick={async () => {
+              const user = await signIn();
+              register(user);
+            }}
           >
             <FcGoogle className="scale-150" />
           </button>

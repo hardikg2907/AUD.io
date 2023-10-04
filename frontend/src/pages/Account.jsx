@@ -61,6 +61,9 @@ const Track = ({ index, submission }) => {
   );
 };
 
+const defaultPfp =
+  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+
 const Account = () => {
   const { user } = useAuthContext();
   const [submissions, setSubmissions] = useState([]);
@@ -88,10 +91,7 @@ const Account = () => {
           background: "linear-gradient(to bottom, #434343 0%, #181717 100%)",
         }}
       >
-        <img
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          className="w-32 h-32 rounded-full"
-        />
+        <img src={user?.pfp || defaultPfp} className="w-32 h-32 rounded-full" />
         <div className="flex flex-col gap-3">
           <p className="text-sm">{user?.email || "Email"}</p>
           <p className="text-5xl">{user?.username || "Username"}</p>

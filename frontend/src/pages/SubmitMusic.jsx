@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Basic } from "../components/FileUpload";
+import { Basic, BasicImage } from "../components/FileUpload";
 import Header from "../components/Header";
 import WaveSurferPlayer from "../components/WaveSurferPlayer";
 import TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
@@ -21,6 +21,7 @@ const SubmitMusic = () => {
     audioFile: "",
     private: false,
     userId: "",
+    thumbnail: "",
   });
   const [zoomLevel, setZoomLevel] = useState(0);
   const [audioRate, setAudioRate] = useState(1);
@@ -40,17 +41,26 @@ const SubmitMusic = () => {
       handleFileUpload(
         formData?.audioFile,
         `${formData?.name}${new Date().getTime()}.mp3`,
-        "data_url"
+        "data_url",
+        "audioFiles"
       ).then(async (downloadUrl) => {
-        let url = downloadUrl;
-        // console.log(url);
-        const res = await axios.post("submissions/add", {
-          ...formData,
-          userId: user._id,
-          audioFile: url,
+        let audioFileUrl = downloadUrl;
+        // console.log(audioFileUrl);
+        handleFileUpload(
+          formData?.thumbnail,
+          `${formData?.name}${new Date().getTime()}.webp`,
+          "data_url",
+          "thumbnails"
+        ).then(async (url) => {
+          const res = await axios.post("submissions/add", {
+            ...formData,
+            userId: user._id,
+            audioFile: audioFileUrl,
+            thumbnail: url,
+          });
+          // setIsSubmitting(false)
+          if (res?.data) navigate("/my-submissions");
         });
-        // setIsSubmitting(false)
-        if (res?.data) navigate("/my-submissions");
       });
     } catch (error) {
       console.log(error);
@@ -85,6 +95,31 @@ const SubmitMusic = () => {
       ) : (
         <div>
           <div className="flex gap-3 justify-start items-start">
+            <div>
+              {formData?.thumbnail && (
+                <img
+                  src={formData?.thumbnail}
+                  alt="thumbnail"
+                  className="w-16 h-16 absolute rounded-md"
+                />
+              )}
+              <BasicImage
+                style={{ opacity: 0 }}
+                onUpload={(files) => {
+                  if (files) {
+                    // Use the FileReader API to read the file and convert it to base64
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        thumbnail: reader.result,
+                      }));
+                    };
+                    reader.readAsDataURL(files[0]);
+                  }
+                }}
+              />
+            </div>
             <input
               type="text"
               placeholder="   Name"
