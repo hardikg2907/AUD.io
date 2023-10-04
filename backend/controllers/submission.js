@@ -205,3 +205,46 @@ exports.giveEditAccess = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.toggleLike=async(req, res)=>{
+  const { submissionId } = req.params;
+  const { userId } = req.body;
+  try {
+    // Search in submission likedByUser Array. If userId not found, Add like else remove like
+    const submission=await Submission.findById(submissionId);
+    const user=await User.findById(userId);
+
+    if(submission.likedByUser.includes(userId)){
+      submission.likedByUser=submission.likedByUser.filter(e=>e.toString()!==userId);
+      user.liked=user.liked.filter(e=>e.toString()!==submissionId);
+
+      await Promise.all([submission.save(), user.save()]);
+    } else {
+      submission.likedByUser.push(userId);
+      user.liked.push(submissionId);
+      await Promise.all([submission.save(), user.save()]);
+    }
+
+    // res.status(200).json({ message: `Added/Removed from Favourites` });
+    res.status(200).json(user.liked);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+exports.likedSongs = async (req, res) => {
+  const {userId}=req.params;
+  try {
+    console.log(userId);
+    const user = await User.findOne({_id: userId}).populate({path:'liked', populate: 'userId'});
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.status(200).json(user.liked);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};

@@ -7,7 +7,8 @@ import {
   BsFillPauseFill,
 } from "react-icons/bs";
 import { PiWaveformBold } from "react-icons/pi";
-import { AiOutlineCloudDownload } from "react-icons/ai";
+import { AiOutlineCloudDownload, AiOutlineHeart } from "react-icons/ai";
+import {FcLike} from "react-icons/fc"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMusicContext } from "../context/MusicContext";
@@ -36,6 +37,7 @@ const downloadMedia = (media, name) => {
 
 const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
   const { user } = useAuthContext();
+  const [liked, setLiked] = useState(submission.likedByUser.includes(user._id));
   const { handleSetSong, activeSong, isPlaying, setIsPlaying } =
     useMusicContext();
   const navigate = useNavigate();
@@ -56,6 +58,12 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
       });
   };
 
+  const toggleLike = async () => {
+    const res=await axios.patch(`submissions/like/${submission._id}`, {userId: user._id})
+    if (res?.data) {
+      setLiked(!liked);
+    }
+  };
   return (
     <div
       key={submission._id}
@@ -78,7 +86,7 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
             <AiOutlineCloudDownload title="Download" />
           </button>
         </a>
-        {(page === "mySub" || submission.userId._id === user._id) && (
+        {(page === "mySub") && (
           <button
             className="bg-[#f03a47] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
@@ -87,6 +95,18 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
             }}
           >
             <BsTrash3 title="Delete" />
+          </button>
+        )}
+        {(page !== "mySub") && (
+          <button
+            className="bg-gray-200 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLike();
+            }}
+          >
+            {!liked && <AiOutlineHeart title="Add to Favourites" />}
+            {liked && <FcLike title="Remove from Favourites" />}
           </button>
         )}
       </div>

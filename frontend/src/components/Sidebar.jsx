@@ -27,7 +27,7 @@ const Sidebar = () => {
     {
       name: "Favourites",
       icon: <AiOutlineHeart/>,
-      // url: "/my-submissions",
+      url: "/favourites",
     },
     {
       name: "Account",

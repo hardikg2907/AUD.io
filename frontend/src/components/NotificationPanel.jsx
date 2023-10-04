@@ -20,7 +20,7 @@ const RequestsNotifications = ({ item, accessAllowed, setAccessAllowed }) => {
         status,
       }
     );
-    console.log(res?.data);
+    // console.log(res?.data);
   };
 
   return (
@@ -114,7 +114,7 @@ const NotificationPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`user/requests/${user?._id}`);
-      console.log(res?.data);
+      // console.log(res?.data);
       if (res?.data) {
         setNotificationItems((prev) => [
           ...prev,
@@ -148,7 +148,7 @@ const NotificationPanel = () => {
       //   setFilteredData(notifications);
     }
   }, [activeTab]);
-  console.log(notificationItems);
+  // console.log(notificationItems);
 
   useEffect(() => {
     setActiveTab("All");
