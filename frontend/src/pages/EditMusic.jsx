@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Basic } from "../components/FileUpload";
+import { Basic, BasicImage } from "../components/FileUpload";
 import Header from "../components/Header";
 import WaveSurfer from "wavesurfer.js";
 import WaveSurferPlayer from "../components/WaveSurferPlayer";
@@ -166,6 +166,31 @@ const EditMusic = () => {
           </div>
         )}
         <div className="flex gap-3 justify-start items-start">
+          <div>
+            {formData?.thumbnail && (
+              <img
+                src={formData?.thumbnail}
+                alt="thumbnail"
+                className="w-16 h-16 absolute rounded-md"
+              />
+            )}
+            <BasicImage
+              style={{ opacity: 0 }}
+              onUpload={(files) => {
+                if (files) {
+                  // Use the FileReader API to read the file and convert it to base64
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      thumbnail: reader.result,
+                    }));
+                  };
+                  reader.readAsDataURL(files[0]);
+                }
+              }}
+            />
+          </div>
           <input
             type="text"
             placeholder="   Name"
