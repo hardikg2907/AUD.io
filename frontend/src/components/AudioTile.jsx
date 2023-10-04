@@ -8,7 +8,7 @@ import {
 } from "react-icons/bs";
 import { PiWaveformBold } from "react-icons/pi";
 import { AiOutlineCloudDownload, AiOutlineHeart } from "react-icons/ai";
-import {FcLike} from "react-icons/fc"
+import { FcLike } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMusicContext } from "../context/MusicContext";
@@ -59,7 +59,9 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
   };
 
   const toggleLike = async () => {
-    const res=await axios.patch(`submissions/like/${submission._id}`, {userId: user._id})
+    const res = await axios.patch(`submissions/like/${submission._id}`, {
+      userId: user._id,
+    });
     if (res?.data) {
       setLiked(!liked);
     }
@@ -86,7 +88,7 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
             <AiOutlineCloudDownload title="Download" />
           </button>
         </a>
-        {(page === "mySub") && (
+        {page === "mySub" && (
           <button
             className="bg-[#f03a47] h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
@@ -97,7 +99,7 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
             <BsTrash3 title="Delete" />
           </button>
         )}
-        {(page !== "mySub") && (
+        {page !== "mySub" && (
           <button
             className="bg-gray-200 h-7 w-7 flex justify-center items-center p-4px rounded-full hover:h-8 hover:w-8 text-center duration-200 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
@@ -111,7 +113,15 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
         )}
       </div>
       {/* <div className=""> */}
-      <BsFillFileEarmarkMusicFill className="mb-10 scale-[300%] text-[#c7c7c7]" />
+      {submission?.thumbnail ? (
+        <img
+          className="w-full absolute -z-10 h-full"
+          src={submission?.thumbnail}
+          alt="thumbnail"
+        />
+      ) : (
+        <BsFillFileEarmarkMusicFill className="mb-10 scale-[300%] text-[#c7c7c7]" />
+      )}
       <div className="bg-[#383838] absolute self-end z-10 w-full px-2 py-1 h-1/3 shadow">
         <div className="flex justify-between items-center relative">
           <div
