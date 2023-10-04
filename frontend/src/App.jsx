@@ -12,6 +12,7 @@ import MySubmissions from "./pages/MySubmissions";
 import EditMusic from "./pages/EditMusic";
 import Discover from "./pages/Discover";
 import Account from "./pages/Account";
+import Favourites from "./pages/Favourites";
 
 const fallbackPath = "/login";
 const App = () => {
@@ -105,6 +106,18 @@ const App = () => {
             user ? (
               <Layout>
                 <Account />
+              </Layout>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/favourites"
+          element={
+            user ? (
+              <Layout>
+                <Favourites />
               </Layout>
             ) : (
               <Navigate to="/" replace />

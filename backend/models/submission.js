@@ -16,6 +16,12 @@ const submissionSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  likedByUser:[
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
+    },
+  ],
   editAccess: [
     {
       type: mongoose.SchemaTypes.ObjectId,

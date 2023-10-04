@@ -19,7 +19,7 @@ const Track = ({ index, submission }) => {
     const audio = new Audio(submission?.audioFile);
 
     audio.addEventListener("loadedmetadata", () => {
-      console.log(audio.duration);
+      // console.log(audio.duration);
       setDuration(audio.duration);
     });
     audio.load();
@@ -74,7 +74,7 @@ const Account = () => {
   const fetchData = async () => {
     setIsLoading(true);
     const res = await axios.get(`submissions/all/${user._id}`);
-    console.log(res?.data);
+    // console.log(res?.data);
     if (res) setSubmissions(res?.data.slice(0, 4));
     setIsLoading(false);
   };
@@ -131,7 +131,7 @@ const Account = () => {
             <p className="text-xl font-bold">Your Favourite Tracks</p>
             <p
               className="text-[#797171] cursor-pointer"
-              // onClick={()=>navigate('/my-submissions')}
+              onClick={()=>navigate('/favourites')}
             >
               See more
             </p>
