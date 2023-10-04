@@ -6,12 +6,14 @@ import Loader from "../components/Loader";
 const Discover = () => {
   const [submissions, setSubmissions] = useState([]);
   const [render, setRender] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
-    setSubmissions([]);
+    setIsLoading(true);
     const res = await axios.get(`submissions/discover`);
     // console.log(res?.data);
     if (res) setSubmissions(res?.data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const Discover = () => {
     fetchData();
   }, [render]);
 
-  if (!submissions.length) return <Loader title={"Loading Songs..."} />;
+  if (isLoading) return <Loader title={"Loading Songs..."} />;
 
   return (
     <div className="container mx-auto mt-8">
@@ -32,6 +34,7 @@ const Discover = () => {
             page="discover"
             allSongs={submissions}
             setRender={setRender}
+            setIsLoading={setIsLoading}
           />
         ))}
       </div>

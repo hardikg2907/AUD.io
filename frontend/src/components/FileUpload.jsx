@@ -49,7 +49,7 @@ export function Basic({ onUpload }) {
   );
 
   return (
-    <div className="container w-32">
+    <div className="container w-32 animate-slideleft">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} onChange={onUpload} />
         <FiUploadCloud className="scale-[2.5] text-red-500 font-light" />

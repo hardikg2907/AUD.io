@@ -60,7 +60,9 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
     <div
       key={submission._id}
       className={`mb-6 hover:shadow-lg transition transform hover:-translate-y-2 cursor-pointer rounded-lg overflow-hidden w-32 h-44 flex justify-center items-center bg-[#3f3f3f] group duration-300 ease-in-out opacity-80 hover:opacity-100 px-2 ${
-        activeSong === submission ? "-translate-y-2 shadow-lg opacity-100" : ""
+        activeSong?._id === submission?._id
+          ? "-translate-y-2 shadow-lg opacity-100"
+          : ""
       }`}
       onClick={() => navigate(`/my-submissions/${submission._id}`)}
     >
@@ -94,10 +96,10 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
         <div className="flex justify-between items-center relative">
           <div
             className={`absolute right-1 rounded-full h-5 w-5 group-hover:opacity-100 transition-all duration-300 ease-in-out opacity-0 scale-150 -mt-8 text-lg text-gray-900 bg-gray-200 flex justify-center items-center hover:scale-[1.7] ${
-              activeSong === submission ? "opacity-100" : ""
+              activeSong?._id === submission?._id ? "opacity-100" : ""
             }`}
             onClick={
-              activeSong === submission && isPlaying
+              activeSong?._id === submission?._id && isPlaying
                 ? (e) => {
                     setIsPlaying(false);
                     e.stopPropagation();
@@ -105,7 +107,7 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
                 : (event) => handleSetSong(submission, allSongs, event)
             }
           >
-            {activeSong === submission && isPlaying ? (
+            {activeSong?._id === submission?._id && isPlaying ? (
               <BsFillPauseFill title="Pause" />
             ) : (
               <BsFillPlayFill title="Play" />

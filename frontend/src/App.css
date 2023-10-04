@@ -143,3 +143,30 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Define the custom scrollbar styles */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+
+/* Define the track (the background of the scrollbar) */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  /* Change the background color */
+}
+
+/* Define the thumb (the draggable part of the scrollbar) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #555;
+  /* Change the color of the thumb */
+  border-radius: 6px;
+  /* Round the corners of the thumb */
+}
+
+/* Define the hover styles for the thumb */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+  /* Change the color on hover */
+}
