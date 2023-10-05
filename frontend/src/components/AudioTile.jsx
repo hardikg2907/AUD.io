@@ -35,9 +35,18 @@ const downloadMedia = (media, name) => {
   })();
 };
 
-const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
+const AudioTile = ({
+  submission,
+  page,
+  setRender,
+  allSongs,
+  setIsLoading,
+  setSubmissions,
+}) => {
   const { user } = useAuthContext();
-  const [liked, setLiked] = useState(submission?.likedByUser.includes(user._id));
+  const [liked, setLiked] = useState(
+    submission?.likedByUser.includes(user._id)
+  );
   const { handleSetSong, activeSong, isPlaying, setIsPlaying } =
     useMusicContext();
   const navigate = useNavigate();
@@ -63,7 +72,19 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
       userId: user._id,
     });
     if (res?.data) {
-      setLiked(!liked);
+      setSubmissions((prev) =>
+        prev?.map((el) => {
+          if (el?._id === submission._id) {
+            return {
+              ...el,
+              likedByUser: el.likedByUser.includes(user._id)
+                ? el.likedByUser?.filter((l) => l !== user._id)
+                : [...el.likedByUser, user._id],
+            };
+          }
+          return el;
+        })
+      );
     }
   };
   return (
@@ -107,8 +128,11 @@ const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
               toggleLike();
             }}
           >
-            {!liked && <AiOutlineHeart title="Add to Favourites" />}
-            {liked && <FcLike title="Remove from Favourites" />}
+            {!submission?.likedByUser.includes(user._id) ? (
+              <AiOutlineHeart title="Add to Favourites" />
+            ) : (
+              <FcLike title="Remove from Favourites" />
+            )}
           </button>
         )}
       </div>
