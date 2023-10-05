@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import axios from "axios";
 
 const Track = ({ isPlaying, isActive, activeSong }) => {
   const { user } = useAuthContext();
+  const [liked, setLiked] = useState(false);
+
+  const toggleLike = async () => {
+    const res = await axios.patch(`submissions/like/${activeSong._id}`, {
+      userId: user._id,
+    });
+    if (res?.data) {
+      setLiked(!liked);
+    }
+  };
+
+  useEffect(() => {
+    if (activeSong?.likedByUser.includes(user._id))
+      setLiked(true)
+    else
+      setLiked(false)
+    // console.log(sdfsd);
+  }, [activeSong])
 
   return (
     <div className="flex-1 flex items-center justify-start">
       <div
-        className={`${
-          isPlaying && isActive ? "" : ""
-        } hidden sm:block h-16 w-16 mr-4`}
+        className={`${isPlaying && isActive ? "" : ""
+          } hidden sm:block h-16 w-16 mr-4`}
       >
         <img
           src={
@@ -29,11 +47,11 @@ const Track = ({ isPlaying, isActive, activeSong }) => {
           {activeSong?.userId?.username
             ? activeSong?.userId?.username
             : user?.username
-            ? user?.username
-            : "No active Song"}
+              ? user?.username
+              : "No active Song"}
         </p>
       </div>
-      <AiOutlineHeart className="text-white text-3xl cursor-pointer" />
+      {liked ? <AiFillHeart className="text-white text-3xl cursor-pointer" onClick={toggleLike} /> : <AiOutlineHeart className="text-white text-3xl cursor-pointer" onClick={toggleLike} />}
     </div>
   );
 };

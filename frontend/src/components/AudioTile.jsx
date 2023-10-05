@@ -37,7 +37,7 @@ const downloadMedia = (media, name) => {
 
 const AudioTile = ({ submission, page, setRender, allSongs, setIsLoading }) => {
   const { user } = useAuthContext();
-  const [liked, setLiked] = useState(submission.likedByUser.includes(user._id));
+  const [liked, setLiked] = useState(submission?.likedByUser.includes(user._id));
   const { handleSetSong, activeSong, isPlaying, setIsPlaying } =
     useMusicContext();
   const navigate = useNavigate();
