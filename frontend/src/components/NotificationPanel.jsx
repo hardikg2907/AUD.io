@@ -12,7 +12,12 @@ const LikesNotifications = ({ item }) => (
   </div>
 );
 
-const RequestsNotifications = ({ item, accessAllowed, setAccessAllowed }) => {
+const RequestsNotifications = ({
+  item,
+  accessAllowed,
+  setAccessAllowed,
+  setReRender,
+}) => {
   const giveEditAccess = async (status) => {
     const res = await axios.patch(
       `submissions/access/${item?.submissionId}/${item?.userId}`,
@@ -20,6 +25,9 @@ const RequestsNotifications = ({ item, accessAllowed, setAccessAllowed }) => {
         status,
       }
     );
+    if (res?.data) {
+      setReRender((prev) => !prev);
+    }
     // console.log(res?.data);
   };
 
@@ -67,6 +75,7 @@ const NotificationPanel = () => {
   const [notificationItems, setNotificationItems] = useState([]);
   const [accessAllowed, setAccessAllowed] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
+  const [reRender, setReRender] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const notificationMenu = [
@@ -111,27 +120,25 @@ const NotificationPanel = () => {
     setFilteredData(newData);
   };
 
+  const fetchData = async () => {
+    const res = await axios.get(`user/requests/${user?._id}`);
+    // console.log(res?.data);
+    if (res?.data) {
+      setNotificationItems((prev) => [
+        ...res?.data?.map((e, index) => ({
+          id: index + 1000,
+          type: "req",
+          message: `${e?.username} requested edit access to ${e?.submission?.name}`,
+          icon: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+          submissionId: e?.submission?._id,
+          userId: e?.userId,
+        })),
+      ]);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(`user/requests/${user?._id}`);
-      // console.log(res?.data);
-      if (res?.data) {
-        setNotificationItems((prev) => [
-          ...prev,
-          ...res?.data?.map((e, index) => ({
-            id: index + 1000,
-            type: "req",
-            message: `${e?.username} requested edit access to ${e?.submission?.name}`,
-            icon: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-            submissionId: e?.submission?._id,
-            userId: e?.userId,
-          })),
-        ]);
-      }
-    };
-
     fetchData();
-  }, [isNotificationClicked]);
+  }, [isNotificationClicked, reRender]);
 
   useEffect(() => {
     setSearchTerm("");
@@ -209,6 +216,7 @@ const NotificationPanel = () => {
                         item={item}
                         accessAllowed={accessAllowed}
                         setAccessAllowed={setAccessAllowed}
+                        setReRender={setReRender}
                       />
                     );
                   }
