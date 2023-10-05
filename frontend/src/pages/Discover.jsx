@@ -7,6 +7,7 @@ const Discover = () => {
   const [submissions, setSubmissions] = useState([]);
   const [render, setRender] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  console.log(submissions);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -33,6 +34,7 @@ const Discover = () => {
             submission={submission}
             page="discover"
             allSongs={submissions}
+            setSubmissions={setSubmissions}
             setRender={setRender}
             setIsLoading={setIsLoading}
           />

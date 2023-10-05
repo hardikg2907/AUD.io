@@ -17,18 +17,17 @@ const Track = ({ isPlaying, isActive, activeSong }) => {
   };
 
   useEffect(() => {
-    if (activeSong?.likedByUser.includes(user._id))
-      setLiked(true)
-    else
-      setLiked(false)
+    if (activeSong?.likedByUser.includes(user._id)) setLiked(true);
+    else setLiked(false);
     // console.log(sdfsd);
-  }, [activeSong])
+  }, [activeSong]);
 
   return (
     <div className="flex-1 flex items-center justify-start">
       <div
-        className={`${isPlaying && isActive ? "" : ""
-          } hidden sm:block h-16 w-16 mr-4`}
+        className={`${
+          isPlaying && isActive ? "" : ""
+        } hidden sm:block h-16 w-16 mr-4`}
       >
         <img
           src={
@@ -47,11 +46,21 @@ const Track = ({ isPlaying, isActive, activeSong }) => {
           {activeSong?.userId?.username
             ? activeSong?.userId?.username
             : user?.username
-              ? user?.username
-              : "No active Song"}
+            ? user?.username
+            : "No active Song"}
         </p>
       </div>
-      {liked ? <AiFillHeart className="text-white text-3xl cursor-pointer" onClick={toggleLike} /> : <AiOutlineHeart className="text-white text-3xl cursor-pointer" onClick={toggleLike} />}
+      {activeSong?.likedByUser.includes(user._id) ? (
+        <AiFillHeart
+          className="text-white text-3xl cursor-pointer"
+          onClick={toggleLike}
+        />
+      ) : (
+        <AiOutlineHeart
+          className="text-white text-3xl cursor-pointer"
+          onClick={toggleLike}
+        />
+      )}
     </div>
   );
 };
