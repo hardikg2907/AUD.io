@@ -50,7 +50,7 @@ exports.getAllSubmissions = async (req, res) => {
   // console.log(req.params);
   try {
     const user = await User.findOne({ _id: req.params.userId }).populate(
-      "submissions"
+      {path:"submissions", populate:{path:"editAccess", select:"username"}}
     );
 
     if (!user) {
