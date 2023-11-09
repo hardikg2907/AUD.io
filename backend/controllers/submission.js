@@ -146,7 +146,7 @@ exports.discover = async (req, res) => {
     if (req.query) {
       submissions = await Submission.find({
         private: false,
-        name: { $regex: req.query.name, $options: "i" },
+        name: { $regex: req.query.name || "", $options: "i" },
       }).populate("userId"); // Populate the user field with the username
     } else {
       submissions = await Submission.find({ private: false }).populate(
