@@ -28,11 +28,27 @@ const Discover = () => {
   const handleChange = (e) => {
     const { value } = e.target;
     setSearchTerm(value);
-    if (value) navigate(`/discover?search=${value}`);
-    else navigate("/discover");
   };
 
-  if (isLoading) return <Loader title={"Loading Songs..."} />;
+  useEffect(() => {
+    const fetchSearchData = async (searchTerm) => {
+      setIsLoading(true);
+      const res = await axios.get(`submissions/discover?name=${searchTerm}`);
+      // console.log(res?.data);
+      if (res) setSubmissions(res?.data);
+      setIsLoading(false);
+    };
+
+    if (searchTerm) {
+      navigate(`/discover?search=${searchTerm}`);
+      fetchSearchData(searchTerm);
+    } else {
+      navigate("/discover");
+      fetchData();
+    }
+  }, [searchTerm]);
+
+  // if (isLoading) return <Loader title={"Loading Songs..."} />;
 
   return (
     <div className="container mx-auto mt-8">
@@ -46,17 +62,21 @@ const Discover = () => {
         />
       </div>
       <div className="flex gap-4 flex-wrap animate-slideup">
-        {submissions.map((submission, ind) => (
-          <AudioTile
-            key={ind}
-            submission={submission}
-            page="discover"
-            allSongs={submissions}
-            setSubmissions={setSubmissions}
-            setRender={setRender}
-            setIsLoading={setIsLoading}
-          />
-        ))}
+        {!isLoading ? (
+          submissions.map((submission, ind) => (
+            <AudioTile
+              key={ind}
+              submission={submission}
+              page="discover"
+              allSongs={submissions}
+              setSubmissions={setSubmissions}
+              setRender={setRender}
+              setIsLoading={setIsLoading}
+            />
+          ))
+        ) : (
+          <Loader title={"Loading Songs..."} />
+        )}
       </div>
     </div>
   );
