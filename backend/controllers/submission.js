@@ -142,9 +142,17 @@ exports.deleteSubmission = async (req, res) => {
 
 exports.discover = async (req, res) => {
   try {
-    const submissions = await Submission.find({ private: false }).populate(
-      "userId"
-    ); // Populate the user field with the username
+    let submissions = [];
+    if (req.query) {
+      submissions = await Submission.find({
+        private: false,
+        name: { $regex: req.query.name || "", $options: "i" },
+      }).populate("userId"); // Populate the user field with the username
+    } else {
+      submissions = await Submission.find({ private: false }).populate(
+        "userId"
+      ); // Populate the user field with the username
+    }
 
     res.json(submissions);
   } catch (err) {
@@ -206,17 +214,19 @@ exports.giveEditAccess = async (req, res) => {
   }
 };
 
-exports.toggleLike=async(req, res)=>{
+exports.toggleLike = async (req, res) => {
   const { submissionId } = req.params;
   const { userId } = req.body;
   try {
     // Search in submission likedByUser Array. If userId not found, Add like else remove like
-    const submission=await Submission.findById(submissionId);
-    const user=await User.findById(userId);
+    const submission = await Submission.findById(submissionId);
+    const user = await User.findById(userId);
 
-    if(submission.likedByUser.includes(userId)){
-      submission.likedByUser=submission.likedByUser.filter(e=>e.toString()!==userId);
-      user.liked=user.liked.filter(e=>e.toString()!==submissionId);
+    if (submission.likedByUser.includes(userId)) {
+      submission.likedByUser = submission.likedByUser.filter(
+        (e) => e.toString() !== userId
+      );
+      user.liked = user.liked.filter((e) => e.toString() !== submissionId);
 
       await Promise.all([submission.save(), user.save()]);
     } else {
@@ -230,13 +240,16 @@ exports.toggleLike=async(req, res)=>{
   } catch (error) {
     res.status(500).send(error);
   }
-}
+};
 
 exports.likedSongs = async (req, res) => {
-  const {userId}=req.params;
+  const { userId } = req.params;
   try {
     console.log(userId);
-    const user = await User.findOne({_id: userId}).populate({path:'liked', populate: 'userId'});
+    const user = await User.findOne({ _id: userId }).populate({
+      path: "liked",
+      populate: "userId",
+    });
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
