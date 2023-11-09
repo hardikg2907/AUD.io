@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AudioTile from "../components/AudioTile";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Discover = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -52,28 +53,35 @@ const Discover = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <div className="flex justify-between">
-        <h1 className="text-3xl font-semibold mb-4 text-gray-200">Discover</h1>
-        <input
-          value={searchTerm}
-          onChange={handleChange}
-          placeholder="Search..."
-          className=""
-        />
+      <div className="flex justify-between items-center pb-5 pr-8">
+        <h1 className="text-3xl font-semibold text-gray-200">Discover</h1>
+        <div className="w-2/5 relative h-9">
+          <AiOutlineSearch className="absolute mt-2 ml-2 text-white text-xl" />
+          <input
+            value={searchTerm}
+            onChange={handleChange}
+            placeholder="Search songs..."
+            className="outline-0 h-full w-full p-3 pl-10 rounded-md bg-[#424141] text-white"
+          />
+        </div>
       </div>
       <div className="flex gap-4 flex-wrap animate-slideup">
         {!isLoading ? (
-          submissions.map((submission, ind) => (
-            <AudioTile
-              key={ind}
-              submission={submission}
-              page="discover"
-              allSongs={submissions}
-              setSubmissions={setSubmissions}
-              setRender={setRender}
-              setIsLoading={setIsLoading}
-            />
-          ))
+          submissions.length ? (
+            submissions.map((submission, ind) => (
+              <AudioTile
+                key={ind}
+                submission={submission}
+                page="discover"
+                allSongs={submissions}
+                setSubmissions={setSubmissions}
+                setRender={setRender}
+                setIsLoading={setIsLoading}
+              />
+            ))
+          ) : (
+            <p className="text-white text-xl">No songs found</p>
+          )
         ) : (
           <Loader title={"Loading Songs..."} />
         )}
