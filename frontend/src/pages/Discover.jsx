@@ -53,7 +53,7 @@ const Discover = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <div className="flex justify-between items-center pb-5">
+      <div className="flex justify-between items-center pb-5 pr-8">
         <h1 className="text-3xl font-semibold text-gray-200">Discover</h1>
         <div className="w-2/5 relative h-9">
           <AiOutlineSearch className="absolute mt-2 ml-2 text-white text-xl" />
@@ -65,7 +65,7 @@ const Discover = () => {
           />
         </div>
       </div>
-      <div className="flex justify-between gap-4 flex-wrap animate-slideup">
+      <div className="flex gap-4 flex-wrap animate-slideup">
         {!isLoading ? (
           submissions.length ? (
             submissions.map((submission, ind) => (
