@@ -44,6 +44,7 @@ const Login = () => {
         <div className="flex flex-col gap-2 w-full text-xs text-white">
           <input
             autoFocus
+            id="email"
             type="email"
             placeholder="Email"
             className={inputStyling}
@@ -55,6 +56,7 @@ const Login = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              id="password"
               className="bg-[#383838] w-full h-full focus:outline-none"
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, password: e.target.value }))
